@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ForgeIntent",
+  "type": "object",
+  "properties": {
+    "userIntent": { "type": "string" },
+    "targetRepo": { "type": "string" },
+    "targetOwner": { "type": "string" },
+    "desiredOutcome": { "type": "string" },
+    "ntfConfidence": { "type": "number", "minimum": 0, "maximum": 1 },
+    "rpMode": { "type": "boolean", "default": false },
+    "timestamp": { "type": "string", "format": "date-time" }
+  },
+  "required": ["userIntent", "targetRepo"]
+}

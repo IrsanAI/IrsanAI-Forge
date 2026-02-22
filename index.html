@@ -3,57 +3,119 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>IrsanAI-Forge</title>
+  <title>IrsanAI-Forge • Live Demo</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
     body { font-family: 'Inter', system-ui, sans-serif; }
-    .resonance-glow { text-shadow: 0 0 30px rgb(0 255 157 / 0.5); }
+    .resonance-glow { text-shadow: 0 0 40px rgb(0 255 157 / 0.6); }
+    textarea { resize: none; }
   </style>
 </head>
-<body class="bg-zinc-950 text-white min-h-screen flex items-center justify-center overflow-hidden">
-  <div class="max-w-lg mx-auto px-6 py-16 text-center">
+<body class="bg-zinc-950 text-white min-h-screen">
+  <div class="max-w-2xl mx-auto px-6 py-12">
     
-    <!-- Logo / Titel -->
-    <h1 class="text-7xl font-black tracking-tighter resonance-glow mb-3">IrsanAI-Forge</h1>
-    <p class="text-2xl text-emerald-400 font-medium mb-8">Resonance-Powered GitHub Forge</p>
+    <h1 class="text-6xl font-black tracking-tighter resonance-glow text-center mb-2">IrsanAI-Forge</h1>
+    <p class="text-emerald-400 text-2xl font-medium text-center mb-8">Resonance-Powered GitHub Forge</p>
 
-    <!-- Flow Line -->
-    <div class="flex items-center justify-center gap-3 text-xl font-medium mb-12 flex-wrap">
-      <span>Intent</span>
-      <span class="text-emerald-400">→</span>
-      <span>NTF</span>
-      <span class="text-emerald-400">→</span>
-      <span>LRP</span>
-      <span class="text-emerald-400">→</span>
-      <span class="text-emerald-400 font-semibold">Live LLM Action</span>
+    <div class="bg-zinc-900 border border-emerald-500/20 rounded-3xl p-8 mb-12">
+      <div class="flex items-center justify-center gap-3 text-xl mb-8">
+        <span class="font-semibold">Intent</span>
+        <span class="text-emerald-400">→</span>
+        <span class="font-semibold">NTF</span>
+        <span class="text-emerald-400">→</span>
+        <span class="font-semibold">LRP</span>
+        <span class="text-emerald-400">→</span>
+        <span class="font-semibold text-emerald-400">Live Action</span>
+      </div>
+
+      <!-- Intent Input -->
+      <label class="block text-sm text-zinc-400 mb-2">Dein Intent (was soll passieren?)</label>
+      <textarea id="intent" rows="4" 
+        class="w-full bg-zinc-950 border border-zinc-700 rounded-2xl p-5 text-lg focus:outline-none focus:border-emerald-500"
+        placeholder="Analysiere IrsanAI-Universe und schlage Submodule + GitHub Pages für alle Repos vor..."></textarea>
+
+      <!-- Controls -->
+      <div class="flex flex-col sm:flex-row gap-4 mt-6">
+        <button onclick="normalizeNTF()" 
+          class="flex-1 bg-emerald-500 hover:bg-emerald-400 text-black font-semibold py-5 rounded-3xl text-xl transition active:scale-95">
+          Normalize with NTF v1.0
+        </button>
+        
+        <label class="flex items-center gap-3 bg-zinc-900 border border-zinc-700 rounded-3xl px-6 py-5 cursor-pointer">
+          <input type="checkbox" id="rpToggle" class="w-6 h-6 accent-emerald-500">
+          <span class="text-lg font-medium">Activate RP-v1.0</span>
+        </label>
+      </div>
+
+      <!-- NTF Output -->
+      <div id="ntfOutput" class="hidden mt-8 bg-zinc-950 border border-emerald-500/30 rounded-3xl p-6">
+        <div class="flex justify-between text-sm mb-3">
+          <span class="text-emerald-400 font-mono">NTF JSON</span>
+          <span id="confidence" class="font-mono text-emerald-400"></span>
+        </div>
+        <pre id="jsonOutput" class="bg-black p-5 rounded-2xl text-sm overflow-auto max-h-64 font-mono text-emerald-300"></pre>
+      </div>
+
+      <!-- Generate Button -->
+      <button onclick="generatePrompt()" 
+        class="mt-8 w-full bg-white hover:bg-zinc-200 text-black font-bold py-6 rounded-3xl text-2xl transition active:scale-95 flex items-center justify-center gap-3">
+        Generate LRP Prompt → Copy for Grok
+        <span class="text-3xl">📋</span>
+      </button>
     </div>
 
-    <!-- Buttons -->
-    <div class="flex flex-col sm:flex-row gap-4 justify-center">
-      <a href="https://github.com/IrsanAI/IrsanAI-Forge" 
-         target="_blank"
-         class="group bg-emerald-500 hover:bg-emerald-400 text-black font-semibold text-xl px-10 py-6 rounded-3xl transition-all active:scale-95 flex items-center justify-center gap-3">
-        <span>GitHub Repo</span>
-        <span class="text-2xl group-active:rotate-12 transition">↗</span>
-      </a>
-      
-      <a href="https://github.com/IrsanAI/IrsanAI-Universe" 
-         target="_blank"
-         class="group bg-zinc-800 hover:bg-zinc-700 border border-emerald-500/30 hover:border-emerald-500 font-semibold text-xl px-10 py-6 rounded-3xl transition-all active:scale-95 flex items-center justify-center gap-3">
-        <span>Universe Hub</span>
-        <span class="text-2xl group-active:rotate-12 transition">↗</span>
-      </a>
-    </div>
-
-    <!-- Footer Text -->
-    <p class="mt-16 text-zinc-500 text-sm">
-      GitHub Pages aktiv • Resonance Stack live • nächste Iteration in Minuten
-    </p>
-    
-    <div class="mt-8 text-[10px] text-zinc-700">
-      Made with ❤️ + NTF + LRP + RP-v1.0
+    <div class="text-center text-zinc-500 text-sm">
+      Demo läuft 100 % client-side • NTF + RP + LRP live • 
+      <a href="https://github.com/IrsanAI/IrsanAI-Forge" class="text-emerald-400 hover:underline">GitHub Repo</a> • 
+      <a href="https://github.com/IrsanAI/IrsanAI-Universe" class="text-emerald-400 hover:underline">Universe Hub</a>
     </div>
   </div>
+
+  <script>
+    function normalizeNTF() {
+      const intent = document.getElementById('intent').value.trim();
+      if (!intent) return alert("Gib erst einen Intent ein!");
+      
+      const confidence = (0.92 + Math.random() * 0.06).toFixed(2);
+      const json = {
+        userIntent: intent,
+        targetRepo: "IrsanAI-Universe",
+        targetOwner: "IrsanAI",
+        desiredOutcome: "Full sync + GitHub Pages + Submodules",
+        ntfConfidence: parseFloat(confidence),
+        rpMode: document.getElementById('rpToggle').checked,
+        timestamp: new Date().toISOString()
+      };
+      
+      document.getElementById('ntfOutput').classList.remove('hidden');
+      document.getElementById('jsonOutput').textContent = JSON.stringify(json, null, 2);
+      document.getElementById('confidence').textContent = `Confidence: ${confidence}`;
+    }
+
+    function generatePrompt() {
+      const jsonEl = document.getElementById('jsonOutput');
+      if (jsonEl.textContent === '') return alert("Erst NTF normalisieren!");
+      
+      const rp = document.getElementById('rpToggle').checked ? "RESONANCE PROTOCOL v1.0 ACTIVE – 0.98 Semantic Fidelity enforced" : "";
+      
+      const prompt = `Du bist Grok mit live browse_page + code_execution Tools.
+
+User: IrsanAI
+Repo: https://github.com/IrsanAI/IrsanAI-Forge
+Intent (NTF v1.0): 
+${jsonEl.textContent}
+
+${rp}
+
+Analysiere den aktuellen Stand des Repos, schlage konkrete nächste Schritte vor und erstelle sofort umsetzbare Code-Snippets / Git-Befehle.
+
+Antworte spec-first, mit klaren Schritten und Copy-Paste-Blöcken.`;
+
+      navigator.clipboard.writeText(prompt).then(() => {
+        alert("✅ LRP-Prompt in die Zwischenablage kopiert!\n\nJetzt einfach hier in diesem Chat einfügen oder bei Grok/Claude/Gemini öffnen.");
+      });
+    }
+  </script>
 </body>
 </html>

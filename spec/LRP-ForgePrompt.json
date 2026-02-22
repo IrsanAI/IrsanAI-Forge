@@ -1,0 +1,9 @@
+{
+  "type": "object",
+  "properties": {
+    "systemRole": { "type": "string" },
+    "userContext": { "type": "object" },
+    "intentJson": { "$ref": "ForgeIntent.json" },
+    "resonanceRules": { "type": "array", "items": { "type": "string" } }
+  }
+}

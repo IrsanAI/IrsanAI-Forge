@@ -23,6 +23,13 @@ Sync any repo → define crystal-clear Intent (NTF) → generate LRP-structured 
 - [IrsanAI-Universe](https://github.com/IrsanAI/IrsanAI-Universe)
 - [IrsanAI-RP-v1.0](https://github.com/IrsanAI/IrsanAI-RP-v1.0)
 
+## Submodules aktivieren (einmalig)
+
+Nach dem Clone oder im Browser-Codespace einfach ausführen:
+
+```bash
+git submodule update --init --recursive
+``` 
 ### Schnellstart
 1. `git clone https://github.com/IrsanAI/IrsanAI-Forge.git`
 2. `cd IrsanAI-Forge && npm install`

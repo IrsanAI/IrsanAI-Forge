@@ -4,20 +4,56 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>IrsanAI-Forge</title>
+  <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    body { font-family: system-ui; background: #0a0a0a; color: #fff; text-align: center; padding: 80px 20px; }
-    h1 { font-size: 3.5rem; margin-bottom: 20px; }
-    .btn { background: #00ff9d; color: #000; padding: 16px 32px; font-size: 1.2rem; border: none; border-radius: 999px; cursor: pointer; margin: 10px; }
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+    body { font-family: 'Inter', system-ui, sans-serif; }
+    .resonance-glow { text-shadow: 0 0 30px rgb(0 255 157 / 0.5); }
   </style>
 </head>
-<body>
-  <h1>IrsanAI-Forge</h1>
-  <p style="font-size:1.4rem; max-width:700px; margin:0 auto 40px;">
-    Resonance-Powered GitHub Forge<br>
-    <strong>Intent → NTF → LRP → Live LLM Action</strong>
-  </p>
-  <a href="https://github.com/IrsanAI/IrsanAI-Forge" class="btn">GitHub Repo</a>
-  <a href="https://github.com/IrsanAI/IrsanAI-Universe" class="btn">Universe Hub</a>
-  <p style="margin-top:60px; opacity:0.7;">GitHub Pages aktiv – nächste Iteration kommt live in Minuten.</p>
+<body class="bg-zinc-950 text-white min-h-screen flex items-center justify-center overflow-hidden">
+  <div class="max-w-lg mx-auto px-6 py-16 text-center">
+    
+    <!-- Logo / Titel -->
+    <h1 class="text-7xl font-black tracking-tighter resonance-glow mb-3">IrsanAI-Forge</h1>
+    <p class="text-2xl text-emerald-400 font-medium mb-8">Resonance-Powered GitHub Forge</p>
+
+    <!-- Flow Line -->
+    <div class="flex items-center justify-center gap-3 text-xl font-medium mb-12 flex-wrap">
+      <span>Intent</span>
+      <span class="text-emerald-400">→</span>
+      <span>NTF</span>
+      <span class="text-emerald-400">→</span>
+      <span>LRP</span>
+      <span class="text-emerald-400">→</span>
+      <span class="text-emerald-400 font-semibold">Live LLM Action</span>
+    </div>
+
+    <!-- Buttons -->
+    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+      <a href="https://github.com/IrsanAI/IrsanAI-Forge" 
+         target="_blank"
+         class="group bg-emerald-500 hover:bg-emerald-400 text-black font-semibold text-xl px-10 py-6 rounded-3xl transition-all active:scale-95 flex items-center justify-center gap-3">
+        <span>GitHub Repo</span>
+        <span class="text-2xl group-active:rotate-12 transition">↗</span>
+      </a>
+      
+      <a href="https://github.com/IrsanAI/IrsanAI-Universe" 
+         target="_blank"
+         class="group bg-zinc-800 hover:bg-zinc-700 border border-emerald-500/30 hover:border-emerald-500 font-semibold text-xl px-10 py-6 rounded-3xl transition-all active:scale-95 flex items-center justify-center gap-3">
+        <span>Universe Hub</span>
+        <span class="text-2xl group-active:rotate-12 transition">↗</span>
+      </a>
+    </div>
+
+    <!-- Footer Text -->
+    <p class="mt-16 text-zinc-500 text-sm">
+      GitHub Pages aktiv • Resonance Stack live • nächste Iteration in Minuten
+    </p>
+    
+    <div class="mt-8 text-[10px] text-zinc-700">
+      Made with ❤️ + NTF + LRP + RP-v1.0
+    </div>
+  </div>
 </body>
 </html>

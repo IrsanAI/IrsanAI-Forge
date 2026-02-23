@@ -37,6 +37,25 @@ git submodule update --init --recursive
 
 **Vision**: Das zentrale Werkzeug, mit dem die gesamte IrsanAI-Community (und du selbst) in Sekunden von Idee → live optimiertem Code kommt.
 
+
+## LOP – Liste offener Punkte (fachlich, nicht technisch blockiert)
+
+Was aus meiner Sicht noch offen ist (aktueller Stand):
+
+- [x] **Spec-First Basis vorhanden**: Kern-Spezifikationen (`TECHNICAL_SPEC.md`, `spec/*.json`) sind angelegt und versioniert.
+- [x] **Submodule-Definition vorhanden**: `IrsanAI-Universe` und `IrsanAI-RP-v1.0` sind in `.gitmodules` eingetragen.
+- [ ] **Next.js 15 App scaffolden**: App Router + TypeScript + Tailwind + ESLint im bestehenden Repo initialisieren.
+- [ ] **GitHub OAuth (Auth.js) anbinden**: Login-Flow + Session-Handling + notwendige GitHub Scopes für Repo-Sync definieren.
+- [ ] **Repo-Sync mit Octokit umsetzen**: Repos laden, Branch-/Datei-Metadaten abrufen, UI-Status für Sync darstellen.
+- [ ] **Intent Studio (NTF) bauen**: Eingabe → NTF-Normalisierung → Confidence Score in UI/API zeigen.
+- [ ] **LRP-Prompt Generator integrieren**: One-Click Prompt-Erzeugung auf Basis der Specs.
+- [ ] **RP-v1.0 Toggle integrieren**: Optionaler Resonance-Boost mit nachvollziehbarem Output-Diff.
+- [ ] **LLM-Launch Buttons finalisieren**: Direktes Öffnen/Kopieren für Grok, Claude, Gemini mit Kontextübergabe.
+- [ ] **Deployment-Setup finalisieren**: Vercel Production + GitHub Pages Preview sauber trennen (Build/Env-Strategie).
+- [ ] **Akzeptanzkriterien / DoD pro Feature verankern**: Messbar machen, wann MVP vollständig ist (End-to-End Flow).
+
+👉 Detaillierte Setup-Schritte für Codespaces inkl. Submodule-Fix und Next.js-Bootstrap stehen in `docs/codespaces-bootstrap.md`.
+
 ---
 
 **Made with Resonance**  

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { Inter } from "next/font/google";
 
 import { NavbarAuthButton } from "@/components/navbar-auth-button";
@@ -32,15 +33,15 @@ export default function RootLayout({
             </div>
 
             <nav className="hidden items-center gap-6 md:flex">
-              <a href="/" className="text-sm font-medium transition-colors hover:text-primary">
+              <Link href="/" className="text-sm font-medium transition-colors hover:text-primary">
                 Home
-              </a>
-              <a href="/intent" className="text-sm font-medium transition-colors hover:text-primary">
+              </Link>
+              <Link href="/intent" className="text-sm font-medium transition-colors hover:text-primary">
                 Intent Studio
-              </a>
-              <a href="/docs" className="text-sm font-medium transition-colors hover:text-primary">
+              </Link>
+              <Link href="/docs" className="text-sm font-medium transition-colors hover:text-primary">
                 Docs
-              </a>
+              </Link>
             </nav>
 
             <NavbarAuthButton />

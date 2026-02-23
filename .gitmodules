@@ -1,6 +1,6 @@
-[submodule "protocols/Universe"]
-	path = protocols/Universe
+[submodule "IrsanAI-Universe"]
+	path = IrsanAI-Universe
 	url = https://github.com/IrsanAI/IrsanAI-Universe.git
-[submodule "protocols/RP-v1.0"]
-	path = protocols/RP-v1.0
+[submodule "IrsanAI-RP-v1.0"]
+	path = IrsanAI-RP-v1.0
 	url = https://github.com/IrsanAI/IrsanAI-RP-v1.0.git

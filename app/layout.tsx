@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Inter } from "next/font/google";
 
 import { NavbarAuthButton } from "@/components/navbar-auth-button";
+import { NavbarControls } from "@/components/navbar-controls";
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -44,7 +45,10 @@ export default function RootLayout({
               </Link>
             </nav>
 
-            <NavbarAuthButton />
+            <div className="flex items-center gap-3">
+              <NavbarControls />
+              <NavbarAuthButton />
+            </div>
           </div>
         </header>
 

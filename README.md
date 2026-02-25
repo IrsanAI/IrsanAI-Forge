@@ -2,6 +2,16 @@
 
 Resonance-Powered GitHub Forge – Sync Repo → NTF-Intent → LRP-Prompt → optional RP-v1.0 Boost → Open in Grok/Claude/Gemini.
 
+## MetaFlow Guard (Branding & Arbeitsmodus)
+
+Ab sofort ist der offizielle Name für die Denkweise:
+
+**IrsanAI MetaFlow Guard**
+
+MetaFlow Guard bedeutet: Hindernisse früh erkennen, nächste Schritte glasklar machen und User-Frustration aktiv verhindern.
+
+---
+
 ## Quickstart (recommended)
 
 ```bash
@@ -12,6 +22,21 @@ pnpm dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000).
+
+---
+
+## Setup in 60 Sekunden (Automation)
+
+```bash
+pnpm setup:local
+```
+
+Das Script übernimmt:
+- `.env.local` aus `.env.example` anlegen (falls fehlend)
+- `pnpm install`
+- Submodule-Init (mit Fallback)
+- Placeholder-Check für OAuth/Secrets
+- Next Actions für Start + OAuth
 
 ---
 
@@ -38,45 +63,19 @@ docker compose --profile prod up --build
 
 ---
 
-## IrsanAI Prädiktiv Vorbeugend (Branding-Prinzip)
-
-Dieses Repo folgt dem Leitprinzip **„IrsanAI Prädiktiv Vorbeugend“**:
-
-- Wir dokumentieren Stolpersteine **bevor** sie auftreten.
-- Setup-Schritte sind für Anfänger und Fortgeschrittene getrennt beschrieben.
-- Typische Fehler (OAuth, Env, Docker, Proxy/Registry) sind mit klaren Fixes erklärt.
-- UX-Hinweise im UI helfen beim nächsten sinnvollen Schritt (z. B. GitHub-Connect vor Repo-Sync).
-
-Ziel: weniger Frust, schneller zum ersten Erfolg.
-
----
-
-## Meta-kognitive Naming-Optionen (statt „Prädiktiv Vorbeugend")
-
-Falls wir den Namen freshen wollen, aber die Botschaft behalten möchten:
-
-1. **IrsanAI Predictive Cognition Layer** (international, tech)
-2. **IrsanAI MetaFlow Guard** (kurz, merkbar, creator-tech Vibe)
-3. **IrsanAI Anticipatory Intelligence** (klarer Forschungs-Charakter)
-4. **IrsanAI Preemptive Creator Engine** (starker „Builder“-Fokus)
-
-Aktuelle Empfehlung für v0.1 Branding-Bridge: **„IrsanAI MetaFlow Guard (Prädiktiv Vorbeugend)“**.
-
----
-
 ## OAuth Setup (GitHub) – Schritt für Schritt
 
-> Ohne diesen Abschnitt bleiben viele Nutzer beim Login/Repo-Sync hängen. Bitte vollständig ausführen.
+> Ohne OAuth bleiben Login und Repo-Sync unvollständig.
 
 ### 1) GitHub OAuth App erstellen
 
 1. Öffne: <https://github.com/settings/developers>
 2. Klicke **OAuth Apps** → **New OAuth App**.
 3. Trage ein:
-   - **Application name**: `IrsanAI Forge (local)`
+   - **Application name**: `IrsanAI Forge`
    - **Homepage URL**: `http://localhost:3000`
    - **Authorization callback URL**: `http://localhost:3000/api/auth/callback/github`
-4. Speichern und **Client ID** sowie **Client Secret** kopieren.
+4. Speichern und **Client ID** + **Client Secret** kopieren.
 
 ### 2) `.env.local` anlegen
 
@@ -84,14 +83,14 @@ Aktuelle Empfehlung für v0.1 Branding-Bridge: **„IrsanAI MetaFlow Guard (Prä
 cp .env.example .env.local
 ```
 
-Dann Werte in `.env.local` eintragen:
-
-- `GITHUB_ID` = Client ID
-- `GITHUB_SECRET` = Client Secret
+Eintragen:
+- `GITHUB_ID`
+- `GITHUB_SECRET`
 - `NEXTAUTH_URL=http://localhost:3000`
-- `NEXTAUTH_SECRET` + `AUTH_SECRET`
+- `NEXTAUTH_SECRET`
+- `AUTH_SECRET`
 
-### 3) Secret generieren (empfohlen)
+### 3) Secret generieren
 
 Option A (OpenSSL):
 
@@ -105,52 +104,43 @@ Option B (Node.js):
 node -e "console.log(require('crypto').randomBytes(32).toString('base64'))"
 ```
 
-Option C (package script):
+Option C (script):
 
 ```bash
 pnpm auth:secret
 ```
 
-Den erzeugten Wert in `NEXTAUTH_SECRET` und `AUTH_SECRET` eintragen.
-
-### 4) App neu starten
+### 4) Neustart
 
 ```bash
 pnpm dev
 ```
 
-oder mit Docker:
+oder:
 
 ```bash
 docker compose up --build
 ```
 
-### 5) Funktion prüfen
+### 5) Check
 
-1. Im Header auf **Connect GitHub** klicken.
-2. In **Sync Repository** sollten echte Repos erscheinen.
-3. Repo auswählen und **Sync this repo to Forge** klicken.
-
----
-
-## Setup in 60 Sekunden (Automation)
-
-```bash
-pnpm setup:local
-```
-
-Das Script übernimmt:
-- `.env.local` aus `.env.example` anlegen (falls fehlend)
-- `pnpm install`
-- Submodule-Init (mit Fallback)
-- Hinweis zur Secret-Generierung (`pnpm auth:secret`)
+1. **Connect GitHub** klicken.
+2. In **Sync Repository** sollten echte Repos laden.
+3. Repo auswählen und **Sync this repo to Forge**.
 
 ---
 
-## Live Demo
+## API Error Recovery (präventive Matrix)
 
-- Vercel (coming soon): `https://irsanai-forge.vercel.app`
-- Sobald Deployment live ist, hier den finalen Produktiv-Link eintragen.
+- **401 Not authenticated**
+  - Ursache: Nicht eingeloggt.
+  - Fix: GitHub verbinden, Seite neu laden.
+- **403 access token missing**
+  - Ursache: Session/OAuth nicht sauber.
+  - Fix: Ausloggen, neu einloggen, Callback URL prüfen.
+- **500 @octokit/core missing**
+  - Ursache: Dependency konnte nicht installiert werden.
+  - Fix: `pnpm add @octokit/core` und bei Proxy-Umgebung README „Known Limitations“ beachten.
 
 ---
 
@@ -167,86 +157,78 @@ Das Script übernimmt:
 - `GITHUB_SECRET`
 - `NEXT_TELEMETRY_DISABLED=1` (optional)
 
-### Deploy Steps
+### Deploy Troubleshooting
 
-1. Click the Vercel button above.
-2. Import repository, Framework preset: **Next.js**.
-3. Add env vars from `.env.example`.
-4. Deploy und `/api/auth/*` sowie `/api/github/repos` prüfen.
+- **Login loop** → `NEXTAUTH_URL` auf echte Domain setzen.
+- **500 bei `/api/github/repos`** → OAuth-Scopes (`read:user repo`) prüfen.
+- **Keine Repos sichtbar** → einmal sign out/in.
 
-### Vercel Troubleshooting
-
-- **GitHub Login loop** → `NEXTAUTH_URL` passt nicht zur echten Domain.
-- **500 bei `/api/github/repos`** → OAuth-Scopes prüfen (`repo`), Secrets erneut setzen.
-- **Keine Repos sichtbar** → einmal ausloggen/einloggen, dann Repo-Sync neu laden.
+Das Script übernimmt:
+- `.env.local` aus `.env.example` anlegen (falls fehlend)
+- `pnpm install`
+- Submodule-Init (mit Fallback)
+- Hinweis zur Secret-Generierung (`pnpm auth:secret`)
 
 ---
 
-## Docker + Submodules (prädiktiv abgesichert)
+## Live Demo
+
+- Vercel (coming soon): `https://irsanai-forge.vercel.app`
+- Sobald Deployment live ist, hier finalen Link eintragen.
+
+---
+
+## Docker + Submodules (MetaFlow Guard abgesichert)
 
 Der Docker-Build initialisiert Submodules automatisch – auch bei frischen Clones ohne `.git` im Build-Kontext:
 
-- Wenn `.git` vorhanden ist → `git submodule update --init --recursive`
-- Wenn `.git` fehlt → Fallback: Clone via `.gitmodules`
+- Mit `.git`: `git submodule update --init --recursive`
+- Ohne `.git`: Fallback-Clone via `.gitmodules`
 
-Das ist in `scripts/init-submodules.sh` und dem `Dockerfile` integriert.
-
----
-
-## Known Limitations
-
-- In einigen Corporate-/CI-Umgebungen kann `pnpm add @octokit/core` durch Registry/Proxy-Policies mit `403` fehlschlagen.
-- `next build` kann in restriktiven Netzwerken bei Google-Font-Fetch (`Inter`) fehlschlagen; lokal wird dann meist eine Fallback-Font genutzt.
-- Für GitHub-Repo-Sync ist ein valider OAuth-Login mit `repo`-Scope erforderlich.
+Siehe: `scripts/init-submodules.sh` + `Dockerfile`.
 
 ---
 
 ## Release & Marketplace Readiness (GitHub Marketplace)
 
-Vor dem Marketplace-Listing empfehlen wir:
+Vor Marketplace-Listing:
 
-1. Vercel-Live-Link aktiv setzen
-2. Kurzvideo/GIF „idea → prompt → llm handoff“ (10–20s)
-3. Mindestens 1 Bug-Template + 1 Feature-Template
-4. Changelog/Tag `v0.1.0`
+1. Vercel Live-Link aktiv setzen
+2. Kurzvideo/GIF „idea → prompt → handoff“ (10–20s)
+3. Issue Templates (Bug + Feature) aktiv
+4. Tag + Changelog `v0.1.0`
 
 ---
 
 ## Contribution
 
-Wir freuen uns über Contributions aus der Community.
+1. Fork + Branch (`feature/...`, `fix/...`)
+2. Lokal testen:
+   ```bash
+   pnpm exec tsc --noEmit
+   pnpm lint
+   ```
+3. PR mit Problem, Lösung, Tests, Screenshot (bei UI-Änderung)
 
-### So kannst du beitragen
+---
 
-1. Fork erstellen und Branch anlegen (`feature/...`, `fix/...`).
-2. Änderungen lokal testen (`pnpm exec tsc --noEmit`, `pnpm lint`).
-3. Klare PR-Beschreibung verfassen (Problem, Lösung, Tests, Screenshot bei UI-Änderungen).
-4. Für größere Änderungen vorher ein Issue mit Vorschlag öffnen.
+## Known Limitations
+
+- In manchen Corporate-/CI-Umgebungen schlägt `pnpm add @octokit/core` mit `403` fehl (Registry/Proxy).
+- `next build` kann bei gesperrtem Google Fonts Zugriff (`Inter`) scheitern.
 
 ---
 
 ## Current MVP Features
 
-- GitHub OAuth via NextAuth (resilient runtime fallback).
-- Intent Studio UI mit NTF-Textarea, Confidence-Score, LRP-Modal.
-- Repository Sync mit echter GitHub-Repo-Liste nach Login.
-- One-click Handoff zu Grok, Claude und Gemini.
-
-## Repo Sync Flow (MVP)
-
-1. Login with GitHub.
-2. Open **Sync Repository**.
-3. Select repository.
-4. Click **Sync this repo to Forge**.
-5. Forge speichert Auswahl lokal für Prompt-Targeting.
+- GitHub OAuth via NextAuth
+- Intent Studio UI mit Confidence Score + LRP Modal
+- Repo Sync mit echter GitHub Repo-Liste
+- One-click Handoff: Grok, Claude, Gemini
 
 ## LOP (Endnote – priorisiert)
 
 1. **P1 – Repo Sync + Intent Binding**: ✅ **100%**
-   - Repositories werden nach GitHub-Login geladen und sind in Forge nutzbar.
 2. **P2 – LRP Generation Pipeline**: ✅ **100%**
-   - Generate-Button erzeugt strukturierten LRP-Prompt inkl. Kontextdaten.
 3. **P3 – RP-v1.0 Boost Integration**: ✅ **100%**
-   - RP-Metadaten (`sourceRepo`, `rpVersion`, `fidelityTarget`) sind in Prompt-Ausgabe integriert.
 4. **P4 – One-click Open in Grok/Claude/Gemini**: ✅ **100%**
-   - Prompt-Handoff funktioniert inkl. Gemini Copy+Open Flow.

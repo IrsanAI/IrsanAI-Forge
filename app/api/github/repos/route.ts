@@ -32,11 +32,23 @@ export async function GET() {
   const session = await auth();
 
   if (!session?.user) {
-    return Response.json({ error: "Not authenticated" }, { status: 401 });
+    return Response.json(
+      {
+        error: "Not authenticated",
+        nextAction: "Connect GitHub in the header and retry repo sync.",
+      },
+      { status: 401 },
+    );
   }
 
   if (!session.accessToken) {
-    return Response.json({ error: "GitHub access token missing in session" }, { status: 403 });
+    return Response.json(
+      {
+        error: "GitHub access token missing in session",
+        nextAction: "Sign out, sign in again, and ensure OAuth app + callback URL are configured.",
+      },
+      { status: 403 },
+    );
   }
 
   try {
@@ -46,6 +58,7 @@ export async function GET() {
       return Response.json(
         {
           error: "@octokit/core is not installed. Run: pnpm add @octokit/core",
+          nextAction: "If installation fails with 403, check README -> Known Limitations (proxy/registry guidance).",
         },
         { status: 500 },
       );
@@ -77,6 +90,7 @@ export async function GET() {
       {
         error: "Failed to load repositories",
         details: error instanceof Error ? error.message : "Unknown error",
+        nextAction: "Verify GitHub OAuth scopes (`read:user repo`) and retry after reconnecting GitHub.",
       },
       { status: 500 },
     );

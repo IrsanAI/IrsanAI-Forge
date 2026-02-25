@@ -141,7 +141,7 @@ function IntentStudioContent() {
           <CardHeader>
             <CardTitle className="text-center text-3xl font-bold">IrsanAI Forge – Intent Studio</CardTitle>
             <CardDescription className="mt-2 text-center">
-              Definiere deinen kristallklaren Intent (NTF) und generiere LRP-Prompts mit Resonance-Boost
+              Definiere deinen kristallklaren Intent (NTF) und generiere LRP-Prompts im IrsanAI MetaFlow Guard Modus
             </CardDescription>
           </CardHeader>
 
@@ -161,7 +161,7 @@ function IntentStudioContent() {
 
             {!isAuthenticated ? (
               <div className="rounded-md border border-dashed bg-muted/40 p-3 text-xs text-muted-foreground">
-                Prädiktiver Hinweis: Verbinde zuerst GitHub (oben rechts), damit Repository-Sync und Prompt-Targeting ohne Unterbrechung funktionieren.
+                MetaFlow Guard Hinweis: Verbinde zuerst GitHub (oben rechts), damit Repository-Sync und Prompt-Targeting ohne Unterbrechung funktionieren.
               </div>
             ) : null}
 
@@ -261,7 +261,7 @@ function IntentStudioContent() {
 
       <div className="fixed bottom-8 right-8">
         <Badge variant="secondary" className="px-4 py-2 text-sm">
-          MVP v0.1 – Made with Resonance
+          MVP v0.1 – IrsanAI MetaFlow Guard
         </Badge>
       </div>
     </main>

@@ -14,10 +14,12 @@ export type LrpPromptInput = {
   intent: string;
   resonanceBoost: boolean;
   ntfConfidence: number;
+  targetRepo: string;
 };
 
-export function buildLrpPrompt({ intent, resonanceBoost, ntfConfidence }: LrpPromptInput) {
+export function buildLrpPrompt({ intent, resonanceBoost, ntfConfidence, targetRepo }: LrpPromptInput) {
   const timestamp = new Date().toISOString();
+  const [targetOwner = "IrsanAI", repoName = targetRepo] = targetRepo.split("/");
   const resonanceRules = resonanceBoost ? [...RP_BASE_RULES, ...RP_BOOST_RULES] : RP_BASE_RULES;
 
   const sections = [
@@ -30,14 +32,15 @@ export function buildLrpPrompt({ intent, resonanceBoost, ntfConfidence }: LrpPro
     `- Timestamp: ${timestamp}`,
     `- NTF Confidence: ${ntfConfidence.toFixed(2)}`,
     `- Resonance Boost: ${resonanceBoost ? "enabled" : "disabled"}`,
+    `- Target Repository: ${targetRepo}`,
     "",
     "## Intent JSON",
     "```json",
     JSON.stringify(
       {
         userIntent: intent,
-        targetRepo: "IrsanAI-Forge",
-        targetOwner: "IrsanAI",
+        targetRepo: repoName,
+        targetOwner,
         desiredOutcome: "Strukturierte und umsetzbare Prompt-basierte Entwicklungsanweisung",
         ntfConfidence,
         rpMode: resonanceBoost,

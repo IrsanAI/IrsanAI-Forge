@@ -8,8 +8,10 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Progress } from "@/components/ui/progress";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
+import { ForgeProvider, useForgeContext } from "@/lib/forge-context";
 import { buildLrpPrompt } from "@/lib/lrp-generator";
 
 const DEFAULT_INTENT = "";
@@ -18,7 +20,9 @@ function clamp(value: number, min: number, max: number) {
   return Math.min(Math.max(value, min), max);
 }
 
-export default function Home() {
+function IntentStudioContent() {
+  const { isAuthenticated, repos, selectedRepoFullName, setSelectedRepoFullName } = useForgeContext();
+
   const [intent, setIntent] = useState(DEFAULT_INTENT);
   const [resonanceBoost, setResonanceBoost] = useState(false);
   const [generatedPrompt, setGeneratedPrompt] = useState("");
@@ -48,6 +52,7 @@ export default function Home() {
       intent: cleanIntent,
       resonanceBoost,
       ntfConfidence: confidence / 100,
+      targetRepo: selectedRepoFullName || "IrsanAI-Forge",
     });
 
     setGeneratedPrompt(prompt);
@@ -69,22 +74,20 @@ export default function Home() {
     }
   };
 
-  const openClaude = async () => {
+  const openClaude = () => {
     if (!generatedPrompt) {
       return;
     }
 
-    const url = `https://claude.ai/new?q=${encodeURIComponent(generatedPrompt)}`;
-    window.open(url, "_blank", "noopener,noreferrer");
+    window.open(`https://claude.ai/new?q=${encodeURIComponent(generatedPrompt)}`, "_blank", "noopener,noreferrer");
   };
 
-  const openGrok = async () => {
+  const openGrok = () => {
     if (!generatedPrompt) {
       return;
     }
 
-    const url = `https://grok.x.ai/?prompt=${encodeURIComponent(generatedPrompt)}`;
-    window.open(url, "_blank", "noopener,noreferrer");
+    window.open(`https://grok.x.ai/?prompt=${encodeURIComponent(generatedPrompt)}`, "_blank", "noopener,noreferrer");
   };
 
   const openGemini = async () => {
@@ -120,6 +123,29 @@ export default function Home() {
                 className="min-h-[150px] resize-y"
               />
             </div>
+
+            {isAuthenticated ? (
+              <div className="space-y-2">
+                <div className="flex items-center justify-between gap-2">
+                  <label htmlFor="prompt-repo" className="text-sm font-medium">
+                    Select Repository
+                  </label>
+                  {selectedRepoFullName ? <Badge variant="outline">{selectedRepoFullName}</Badge> : null}
+                </div>
+                <Select value={selectedRepoFullName} onValueChange={setSelectedRepoFullName}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Repository für Prompt auswählen" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {repos.map((repo) => (
+                      <SelectItem key={repo.id} value={repo.fullName}>
+                        {repo.fullName}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            ) : null}
 
             <div className="space-y-2">
               <div className="flex justify-between text-sm">
@@ -176,7 +202,7 @@ export default function Home() {
           </DialogHeader>
 
           <div className="max-h-[52vh] overflow-auto rounded-md border bg-muted/40 p-4">
-            <pre className="text-xs whitespace-pre-wrap break-words">{generatedPrompt}</pre>
+            <pre className="whitespace-pre-wrap break-words text-xs">{generatedPrompt}</pre>
           </div>
 
           <DialogFooter>
@@ -194,5 +220,13 @@ export default function Home() {
         </Badge>
       </div>
     </main>
+  );
+}
+
+export default function Home() {
+  return (
+    <ForgeProvider>
+      <IntentStudioContent />
+    </ForgeProvider>
   );
 }

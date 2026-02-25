@@ -5,29 +5,26 @@ import { useEffect, useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-
-type SyncedRepo = {
-  id: number;
-  name: string;
-  fullName: string;
-  private: boolean;
-  htmlUrl: string;
-  defaultBranch: string;
-  updatedAt: string;
-};
+import { useForgeContext } from "@/lib/forge-context";
 
 const STORAGE_KEY = "irsanai-forge-synced-repo";
 
 export function RepoSyncSection() {
-  const [repos, setRepos] = useState<SyncedRepo[]>([]);
-  const [selectedRepoFullName, setSelectedRepoFullName] = useState<string>("");
+  const {
+    isAuthenticated,
+    setIsAuthenticated,
+    repos,
+    setRepos,
+    selectedRepoFullName,
+    setSelectedRepoFullName,
+  } = useForgeContext();
+
   const [loading, setLoading] = useState(true);
-  const [errorMessage, setErrorMessage] = useState<string>("");
-  const [successMessage, setSuccessMessage] = useState<string>("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
 
   useEffect(() => {
     const savedRepo = window.localStorage.getItem(STORAGE_KEY);
-
     if (savedRepo) {
       setSelectedRepoFullName(savedRepo);
     }
@@ -38,17 +35,23 @@ export function RepoSyncSection() {
 
         if (!response.ok) {
           if (response.status === 401) {
+            setIsAuthenticated(false);
             setErrorMessage("Bitte verbinde zuerst deinen GitHub-Account.");
           } else {
             const payload = (await response.json()) as { error?: string };
             setErrorMessage(payload.error ?? "Repos konnten nicht geladen werden.");
           }
-          setLoading(false);
+          setRepos([]);
           return;
         }
 
-        const payload = (await response.json()) as { repos: SyncedRepo[] };
+        const payload = (await response.json()) as {
+          repos: typeof repos;
+        };
+
+        setIsAuthenticated(true);
         setRepos(payload.repos);
+        setErrorMessage("");
       } catch {
         setErrorMessage("Netzwerkfehler beim Laden der Repositories.");
       } finally {
@@ -57,7 +60,7 @@ export function RepoSyncSection() {
     }
 
     void loadRepos();
-  }, []);
+  }, [setIsAuthenticated, setRepos, setSelectedRepoFullName]);
 
   const selectedRepo = useMemo(
     () => repos.find((repo) => repo.fullName === selectedRepoFullName),
@@ -72,12 +75,13 @@ export function RepoSyncSection() {
     }
 
     window.localStorage.setItem(STORAGE_KEY, selectedRepo.fullName);
+    setSelectedRepoFullName(selectedRepo.fullName);
     setErrorMessage("");
-    setSuccessMessage("Repo synced – du kannst jetzt Intents darauf anwenden");
+    setSuccessMessage(`Repo synced: ${selectedRepo.fullName}`);
   }
 
   return (
-    <Card className="w-full max-w-2xl mx-auto mt-8">
+    <Card className="mx-auto mt-8 w-full max-w-2xl">
       <CardHeader>
         <CardTitle>Sync Repository</CardTitle>
         <CardDescription>
@@ -85,9 +89,21 @@ export function RepoSyncSection() {
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
-        <Select value={selectedRepoFullName} onValueChange={setSelectedRepoFullName} disabled={loading || repos.length === 0}>
+        <Select
+          value={selectedRepoFullName}
+          onValueChange={setSelectedRepoFullName}
+          disabled={loading || !isAuthenticated || repos.length === 0}
+        >
           <SelectTrigger>
-            <SelectValue placeholder={loading ? "Lade Repositories..." : "Repository auswählen"} />
+            <SelectValue
+              placeholder={
+                loading
+                  ? "Lade Repositories..."
+                  : !isAuthenticated
+                    ? "Bitte zuerst mit GitHub verbinden"
+                    : "Repository auswählen"
+              }
+            />
           </SelectTrigger>
           <SelectContent>
             {repos.map((repo) => (
@@ -98,13 +114,14 @@ export function RepoSyncSection() {
           </SelectContent>
         </Select>
 
-        <Button onClick={handleSync} disabled={loading || repos.length === 0 || !selectedRepoFullName}>
+        <Button onClick={handleSync} disabled={loading || !isAuthenticated || repos.length === 0 || !selectedRepoFullName}>
           Sync this repo to Forge
         </Button>
 
         {selectedRepo ? (
           <p className="text-sm text-muted-foreground">
-            Standard Branch: <strong>{selectedRepo.defaultBranch}</strong> · Zuletzt aktualisiert: {new Date(selectedRepo.updatedAt).toLocaleString("de-DE")}
+            Standard Branch: <strong>{selectedRepo.defaultBranch}</strong> · Zuletzt aktualisiert:{" "}
+            {new Date(selectedRepo.updatedAt).toLocaleString("de-DE")}
           </p>
         ) : null}
 

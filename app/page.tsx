@@ -231,6 +231,10 @@ function IntentStudioContent() {
         </Card>
 
         <RepoSyncSection />
+
+        <div className="mx-auto w-full max-w-3xl rounded-md border border-dashed p-3 text-xs text-muted-foreground">
+          Feedback willkommen: Nutze <a className="underline" href="https://github.com/IrsanAI/IrsanAI-Forge/issues/new/choose" target="_blank" rel="noreferrer">GitHub Issues</a> für Bugs, Ideen oder UX-Verbesserungen.
+        </div>
       </div>
 
       <Dialog open={isPromptModalOpen} onOpenChange={setIsPromptModalOpen}>

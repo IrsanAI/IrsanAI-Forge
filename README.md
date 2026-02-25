@@ -51,6 +51,19 @@ Ziel: weniger Frust, schneller zum ersten Erfolg.
 
 ---
 
+## Meta-kognitive Naming-Optionen (statt „Prädiktiv Vorbeugend")
+
+Falls wir den Namen freshen wollen, aber die Botschaft behalten möchten:
+
+1. **IrsanAI Predictive Cognition Layer** (international, tech)
+2. **IrsanAI MetaFlow Guard** (kurz, merkbar, creator-tech Vibe)
+3. **IrsanAI Anticipatory Intelligence** (klarer Forschungs-Charakter)
+4. **IrsanAI Preemptive Creator Engine** (starker „Builder“-Fokus)
+
+Aktuelle Empfehlung für v0.1 Branding-Bridge: **„IrsanAI MetaFlow Guard (Prädiktiv Vorbeugend)“**.
+
+---
+
 ## OAuth Setup (GitHub) – Schritt für Schritt
 
 > Ohne diesen Abschnitt bleiben viele Nutzer beim Login/Repo-Sync hängen. Bitte vollständig ausführen.
@@ -120,6 +133,20 @@ docker compose up --build
 
 ---
 
+## Setup in 60 Sekunden (Automation)
+
+```bash
+pnpm setup:local
+```
+
+Das Script übernimmt:
+- `.env.local` aus `.env.example` anlegen (falls fehlend)
+- `pnpm install`
+- Submodule-Init (mit Fallback)
+- Hinweis zur Secret-Generierung (`pnpm auth:secret`)
+
+---
+
 ## Live Demo
 
 - Vercel (coming soon): `https://irsanai-forge.vercel.app`
@@ -171,6 +198,17 @@ Das ist in `scripts/init-submodules.sh` und dem `Dockerfile` integriert.
 - In einigen Corporate-/CI-Umgebungen kann `pnpm add @octokit/core` durch Registry/Proxy-Policies mit `403` fehlschlagen.
 - `next build` kann in restriktiven Netzwerken bei Google-Font-Fetch (`Inter`) fehlschlagen; lokal wird dann meist eine Fallback-Font genutzt.
 - Für GitHub-Repo-Sync ist ein valider OAuth-Login mit `repo`-Scope erforderlich.
+
+---
+
+## Release & Marketplace Readiness (GitHub Marketplace)
+
+Vor dem Marketplace-Listing empfehlen wir:
+
+1. Vercel-Live-Link aktiv setzen
+2. Kurzvideo/GIF „idea → prompt → llm handoff“ (10–20s)
+3. Mindestens 1 Bug-Template + 1 Feature-Template
+4. Changelog/Tag `v0.1.0`
 
 ---
 

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { Inter } from "next/font/google";
+import Link from "next/link";
 
 import { NavbarAuthButton } from "@/components/navbar-auth-button";
 import { NavbarControls } from "@/components/navbar-controls";
@@ -18,9 +18,6 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const [resonanceBoost, setResonanceBoost] = useState(false);
-  const [darkMode, setDarkMode] = useState(true); // Default dark
-
   return (
     <html lang="de" className="dark">
       <body className={`${inter.className} min-h-screen bg-background text-foreground antialiased`}>

@@ -15,6 +15,29 @@ Open [http://localhost:3000](http://localhost:3000).
 
 ---
 
+## Docker Quickstart (empfohlen für 1-Klick-Setup)
+
+```bash
+cp .env.example .env.local  # falls vorhanden, sonst .env.local manuell anlegen
+docker compose up --build
+```
+
+Open [http://localhost:3000](http://localhost:3000).
+
+Stoppen:
+
+```bash
+docker compose down
+```
+
+Für ein Production-Image:
+
+```bash
+docker compose --profile prod up --build
+```
+
+---
+
 ## WHO AM I? (Setup by environment)
 
 Choose your environment and run the matching steps.
@@ -154,43 +177,6 @@ npm run dev
 
 ---
 
-## Docker (optional, but very useful for GitHub visitors)
-
-**Decision:** Yes — for this repo Docker is a good addition (not too much), because it removes local Node/pnpm setup friction for first-time visitors.
-
-### Prerequisites
-- Docker Desktop (Windows/macOS) or Docker Engine (Linux)
-
-### 1) Prepare env file
-Create `.env.local` in project root (used by `docker-compose.yml`):
-
-```bash
-NEXTAUTH_URL=http://localhost:3000
-AUTH_SECRET=replace-with-a-long-random-secret
-GITHUB_ID=your_github_oauth_app_client_id
-GITHUB_SECRET=your_github_oauth_app_client_secret
-```
-
-### 2) Start with Docker Compose
-
-```bash
-docker compose up --build
-```
-
-Then open [http://localhost:3000](http://localhost:3000).
-
-### 3) Stop
-
-```bash
-docker compose down
-```
-
-### Notes
-- The project uses a production-style multi-stage Docker build with Next.js standalone output.
-- For local non-Docker development, keep using the pnpm/corepack flow above.
-
----
-
 ## Current MVP Features
 
 - GitHub OAuth via NextAuth (resilient runtime fallback).
@@ -210,9 +196,9 @@ docker compose down
 1. **P1 – Repo Sync + Intent Binding**: ✅ **100%**
    - Repositories can be loaded after GitHub login.
    - Selected repository can be synced and persisted locally (MVP).
-2. **P2 – LRP Generation Pipeline**: 🟡 **35%**
-   - UI is in place; backend orchestration still pending.
-3. **P3 – RP-v1.0 Boost Integration**: 🟡 **20%**
-   - UX entry points exist; integration logic is pending.
-4. **P4 – One-click Open in Grok/Claude/Gemini**: 🟡 **30%**
-   - Buttons exist in UI; dynamic prompt handoff is pending.
+2. **P2 – LRP Generation Pipeline**: ✅ **100%**
+   - Generate-Button erstellt jetzt einen strukturierten LRP-Prompt inklusive NTF-Context und RP-Boost-Regeln.
+3. **P3 – RP-v1.0 Boost Integration**: 🟡 **70%**
+   - Resonance-Toggle aktiviert konkrete RP-v1.0-Regeln in der Prompt-Generierung (MVP ohne Submodule-Import wegen Netzwerkrestriktion).
+4. **P4 – One-click Open in Grok/Claude/Gemini**: ✅ **100%**
+   - Buttons öffnen jetzt zielgerichtet mit Prompt-Handoff (inkl. Gemini Copy+Open Flow).

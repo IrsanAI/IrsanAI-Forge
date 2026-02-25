@@ -15,6 +15,29 @@ Open [http://localhost:3000](http://localhost:3000).
 
 ---
 
+## Docker Quickstart (empfohlen für 1-Klick-Setup)
+
+```bash
+cp .env.example .env.local  # falls vorhanden, sonst .env.local manuell anlegen
+docker compose up --build
+```
+
+Open [http://localhost:3000](http://localhost:3000).
+
+Stoppen:
+
+```bash
+docker compose down
+```
+
+Für ein Production-Image:
+
+```bash
+docker compose --profile prod up --build
+```
+
+---
+
 ## WHO AM I? (Setup by environment)
 
 Choose your environment and run the matching steps.
@@ -154,40 +177,66 @@ npm run dev
 
 ---
 
-## Docker (optional, but very useful for GitHub visitors)
+## Live Demo
 
-**Decision:** Yes — for this repo Docker is a good addition (not too much), because it removes local Node/pnpm setup friction for first-time visitors.
+- Vercel (coming soon): `https://irsanai-forge.vercel.app`
+- Sobald Deployment live ist, hier den finalen Produktiv-Link eintragen.
 
-### Prerequisites
-- Docker Desktop (Windows/macOS) or Docker Engine (Linux)
+---
 
-### 1) Prepare env file
-Create `.env.local` in project root (used by `docker-compose.yml`):
+## Vercel Deploy (One-Click)
 
-```bash
-NEXTAUTH_URL=http://localhost:3000
-AUTH_SECRET=replace-with-a-long-random-secret
-GITHUB_ID=your_github_oauth_app_client_id
-GITHUB_SECRET=your_github_oauth_app_client_secret
-```
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/IrsanAI/IrsanAI-Forge)
 
-### 2) Start with Docker Compose
+### Required Vercel Environment Variables
 
-```bash
-docker compose up --build
-```
+- `NEXTAUTH_URL` (set to your deployed URL, e.g. `https://your-project.vercel.app`)
+- `NEXTAUTH_SECRET`
+- `AUTH_SECRET`
+- `GITHUB_ID`
+- `GITHUB_SECRET`
+- `NEXT_TELEMETRY_DISABLED=1` (optional)
 
-Then open [http://localhost:3000](http://localhost:3000).
+### Deploy Steps
 
-### 3) Stop
+1. Click the Vercel button above.
+2. Import the repository and confirm framework preset: **Next.js**.
+3. Add all env vars from `.env.example`.
+4. Trigger deploy and verify `/api/auth/*` and `/api/github/repos` are healthy.
 
-```bash
-docker compose down
-```
+---
 
-### Notes
-- The project uses a production-style multi-stage Docker build with Next.js standalone output.
-- For local non-Docker development, keep using the pnpm/corepack flow above.
+## Contribution
+
+Wir freuen uns über Contributions aus der Community.
+
+### So kannst du beitragen
+
+1. Fork erstellen und Branch anlegen (`feature/...`, `fix/...`).
+2. Änderungen lokal testen (mindestens `pnpm lint` und `pnpm exec tsc --noEmit`).
+3. Klare PR-Beschreibung verfassen (Problem, Lösung, Tests, Screenshot bei UI-Änderungen).
+4. Für größere Änderungen vorher ein Issue mit Vorschlag öffnen.
+
+### Gute PRs enthalten
+
+- Fokus auf ein klar umrissenes Problem
+- Rückwärtskompatible Änderungen, wenn möglich
+- Aktualisierte Doku (`README.md`) bei Setup-/Feature-Änderungen
+
+### Issue-Template (Kurz)
+
+- **Expected behavior**
+- **Current behavior**
+- **Steps to reproduce**
+- **Environment** (OS, Node-Version, Docker ja/nein)
+
+---
+
+## Known Limitations
+
+- In einigen Corporate-/CI-Umgebungen kann `pnpm add @octokit/core` durch Registry/Proxy-Policies mit `403` fehlschlagen.
+- `next build` kann in restriktiven Netzwerken bei Google-Font-Fetch (`Inter`) fehlschlagen; lokal wird dann meist eine Fallback-Font genutzt.
+- Für GitHub-Repo-Sync ist ein valider OAuth-Login mit `repo`-Scope erforderlich.
 
 ---
 
@@ -210,9 +259,9 @@ docker compose down
 1. **P1 – Repo Sync + Intent Binding**: ✅ **100%**
    - Repositories can be loaded after GitHub login.
    - Selected repository can be synced and persisted locally (MVP).
-2. **P2 – LRP Generation Pipeline**: 🟡 **35%**
-   - UI is in place; backend orchestration still pending.
-3. **P3 – RP-v1.0 Boost Integration**: 🟡 **20%**
-   - UX entry points exist; integration logic is pending.
-4. **P4 – One-click Open in Grok/Claude/Gemini**: 🟡 **30%**
-   - Buttons exist in UI; dynamic prompt handoff is pending.
+2. **P2 – LRP Generation Pipeline**: ✅ **100%**
+   - Generate-Button erstellt jetzt einen strukturierten LRP-Prompt inklusive NTF-Context und RP-Boost-Regeln.
+3. **P3 – RP-v1.0 Boost Integration**: ✅ **90%**
+   - Prompt-Generator liest jetzt zusätzlich RP-Integrationsdaten aus `spec/RP-Integration.json` (Source Repo, Version, Fidelity).
+4. **P4 – One-click Open in Grok/Claude/Gemini**: ✅ **100%**
+   - Buttons öffnen jetzt zielgerichtet mit Prompt-Handoff (inkl. Gemini Copy+Open Flow).

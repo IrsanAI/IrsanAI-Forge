@@ -21,7 +21,9 @@ Choose your environment and run the matching steps.
 
 ### 1) Windows User (PowerShell / CMD)
 
-If `pnpm` is not recognized (like your PyCharm log), enable it via **Corepack** first:
+If `pnpm` is not recognized, follow this **predictive order**:
+
+#### Path A — Corepack works (normal case)
 
 ```powershell
 node -v
@@ -32,32 +34,72 @@ pnpm install
 pnpm dev
 ```
 
-If `corepack` is not available, install a newer Node.js LTS (>= 20) and retry.
+#### Path B — Corepack fails with `EPERM` on `C:\Program Files\nodejs\pnpm`
+
+This means your shell cannot write into the Node.js install directory (missing admin rights).
+
+Use **Corepack without global enable** (no Program Files write required):
+
+```powershell
+node -v
+corepack prepare pnpm@latest --activate
+corepack pnpm -v
+corepack pnpm install
+corepack pnpm dev
+```
+
+If `corepack pnpm ...` still fails, use the **no-install fallback**:
+
+```powershell
+npx pnpm@latest -v
+npx pnpm@latest install
+npx pnpm@latest dev
+```
+
+#### Path C — Last fallback (npm)
+
+```powershell
+npm install
+npm run dev
+```
+
+> Repo-standard remains pnpm, but npm is valid when corporate/device permissions block pnpm bootstrap.
 
 ### 2) PyCharm User (Windows/macOS/Linux)
 
-PyCharm works fine, but its terminal only uses tools already available in your OS PATH.
-A Python `.venv` does **not** install pnpm automatically.
+PyCharm works fine, but its terminal only sees tools that already exist in your OS `PATH`.
+A Python `.venv` does **not** install pnpm.
 
-Recommended PyCharm flow:
+#### Recommended PyCharm flow
 
-1. Open PyCharm Terminal.
-2. Verify Node and Corepack:
+1. Open **PyCharm Terminal** in the project root.
+2. Check runtime:
    ```bash
    node -v
+   ```
+3. Try standard pnpm bootstrap:
+   ```bash
    corepack enable
    corepack prepare pnpm@latest --activate
    pnpm -v
    ```
-3. Then run:
+4. If you get Windows `EPERM` (Program Files), switch immediately to:
    ```bash
-   pnpm install
-   pnpm dev
+   corepack pnpm -v
+   corepack pnpm install
+   corepack pnpm dev
+   ```
+5. If that also fails, use:
+   ```bash
+   npx pnpm@latest install
+   npx pnpm@latest dev
    ```
 
-PyCharm settings tip:
+#### PyCharm terminal settings (important)
+
 - **Settings → Tools → Terminal**
-- Use your normal shell (`powershell.exe`, `cmd.exe`, or `bash`) and make sure Node install path is accessible.
+- Shell path should be a real system shell (`powershell.exe`, `cmd.exe`, `bash`) 
+- Restart PyCharm after Node/Corepack changes so PATH refreshes in terminal sessions.
 
 ### 3) macOS / Linux User
 
@@ -68,6 +110,20 @@ corepack prepare pnpm@latest --activate
 pnpm -v
 pnpm install
 pnpm dev
+```
+
+If your shell has permission constraints, use:
+
+```bash
+corepack pnpm install
+corepack pnpm dev
+```
+
+or
+
+```bash
+npx pnpm@latest install
+npx pnpm@latest dev
 ```
 
 ### 4) Smartphone / Tablet User
@@ -82,21 +138,19 @@ Use one of:
 
 ## Fallback if pnpm is blocked
 
-If company policies or environment restrictions block pnpm, you can still run locally with npm:
+If company policies or environment restrictions block pnpm entirely, you can still run locally with npm:
 
 ```bash
 npm install
 npm run dev
 ```
 
-> Note: the project standard remains **pnpm** for lockfile consistency.
-
 ---
 
 ## Required Versions
 
 - Node.js: **>= 20**
-- pnpm: **latest via Corepack recommended**
+- pnpm: **latest via Corepack or npx fallback**
 
 ---
 

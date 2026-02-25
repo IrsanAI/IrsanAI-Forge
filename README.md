@@ -154,6 +154,43 @@ npm run dev
 
 ---
 
+## Docker (optional, but very useful for GitHub visitors)
+
+**Decision:** Yes — for this repo Docker is a good addition (not too much), because it removes local Node/pnpm setup friction for first-time visitors.
+
+### Prerequisites
+- Docker Desktop (Windows/macOS) or Docker Engine (Linux)
+
+### 1) Prepare env file
+Create `.env.local` in project root (used by `docker-compose.yml`):
+
+```bash
+NEXTAUTH_URL=http://localhost:3000
+AUTH_SECRET=replace-with-a-long-random-secret
+GITHUB_ID=your_github_oauth_app_client_id
+GITHUB_SECRET=your_github_oauth_app_client_secret
+```
+
+### 2) Start with Docker Compose
+
+```bash
+docker compose up --build
+```
+
+Then open [http://localhost:3000](http://localhost:3000).
+
+### 3) Stop
+
+```bash
+docker compose down
+```
+
+### Notes
+- The project uses a production-style multi-stage Docker build with Next.js standalone output.
+- For local non-Docker development, keep using the pnpm/corepack flow above.
+
+---
+
 ## Current MVP Features
 
 - GitHub OAuth via NextAuth (resilient runtime fallback).

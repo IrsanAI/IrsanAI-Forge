@@ -177,6 +177,54 @@ npm run dev
 
 ---
 
+## Vercel Deploy (One-Click)
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/IrsanAI/IrsanAI-Forge)
+
+### Required Vercel Environment Variables
+
+- `NEXTAUTH_URL` (set to your deployed URL, e.g. `https://your-project.vercel.app`)
+- `NEXTAUTH_SECRET`
+- `AUTH_SECRET`
+- `GITHUB_ID`
+- `GITHUB_SECRET`
+- `NEXT_TELEMETRY_DISABLED=1` (optional)
+
+### Deploy Steps
+
+1. Click the Vercel button above.
+2. Import the repository and confirm framework preset: **Next.js**.
+3. Add all env vars from `.env.example`.
+4. Trigger deploy and verify `/api/auth/*` and `/api/github/repos` are healthy.
+
+---
+
+## Contribution
+
+Wir freuen uns über Contributions aus der Community.
+
+### So kannst du beitragen
+
+1. Fork erstellen und Branch anlegen (`feature/...`, `fix/...`).
+2. Änderungen lokal testen (mindestens `pnpm lint` und `pnpm exec tsc --noEmit`).
+3. Klare PR-Beschreibung verfassen (Problem, Lösung, Tests, Screenshot bei UI-Änderungen).
+4. Für größere Änderungen vorher ein Issue mit Vorschlag öffnen.
+
+### Gute PRs enthalten
+
+- Fokus auf ein klar umrissenes Problem
+- Rückwärtskompatible Änderungen, wenn möglich
+- Aktualisierte Doku (`README.md`) bei Setup-/Feature-Änderungen
+
+### Issue-Template (Kurz)
+
+- **Expected behavior**
+- **Current behavior**
+- **Steps to reproduce**
+- **Environment** (OS, Node-Version, Docker ja/nein)
+
+---
+
 ## Current MVP Features
 
 - GitHub OAuth via NextAuth (resilient runtime fallback).
@@ -198,7 +246,7 @@ npm run dev
    - Selected repository can be synced and persisted locally (MVP).
 2. **P2 – LRP Generation Pipeline**: ✅ **100%**
    - Generate-Button erstellt jetzt einen strukturierten LRP-Prompt inklusive NTF-Context und RP-Boost-Regeln.
-3. **P3 – RP-v1.0 Boost Integration**: 🟡 **70%**
-   - Resonance-Toggle aktiviert konkrete RP-v1.0-Regeln in der Prompt-Generierung (MVP ohne Submodule-Import wegen Netzwerkrestriktion).
+3. **P3 – RP-v1.0 Boost Integration**: ✅ **90%**
+   - Prompt-Generator liest jetzt zusätzlich RP-Integrationsdaten aus `spec/RP-Integration.json` (Source Repo, Version, Fidelity).
 4. **P4 – One-click Open in Grok/Claude/Gemini**: ✅ **100%**
    - Buttons öffnen jetzt zielgerichtet mit Prompt-Handoff (inkl. Gemini Copy+Open Flow).

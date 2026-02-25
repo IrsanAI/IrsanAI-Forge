@@ -16,6 +16,25 @@ import { buildLrpPrompt } from "@/lib/lrp-generator";
 
 const DEFAULT_INTENT = "";
 
+const INTENT_KEYWORDS = [
+  "api",
+  "auth",
+  "docker",
+  "typescript",
+  "shadcn",
+  "responsive",
+  "dark",
+  "test",
+  "security",
+  "performance",
+  "accessibility",
+  "prompt",
+  "repo",
+  "github",
+  "ci",
+  "lint",
+];
+
 function clamp(value: number, min: number, max: number) {
   return Math.min(Math.max(value, min), max);
 }
@@ -30,14 +49,21 @@ function IntentStudioContent() {
   const [copied, setCopied] = useState(false);
 
   const confidence = useMemo(() => {
-    if (!intent.trim()) {
-      return 0;
+    const cleanIntent = intent.trim().toLowerCase();
+    if (!cleanIntent) {
+      return 60;
     }
 
-    const baseFromLength = clamp(55 + intent.trim().length / 4, 0, 92);
-    const resonanceBonus = resonanceBoost ? 6 : 0;
+    const words = cleanIntent.split(/\s+/).filter(Boolean);
+    const uniqueWords = new Set(words);
+    const keywordMatches = INTENT_KEYWORDS.filter((keyword) => cleanIntent.includes(keyword)).length;
 
-    return clamp(Math.round(baseFromLength + resonanceBonus), 0, 99);
+    const lengthScore = clamp(cleanIntent.length * 0.18, 0, 24);
+    const structureScore = clamp(uniqueWords.size * 0.45, 0, 10);
+    const keywordScore = clamp(keywordMatches * 3.5, 0, 18);
+    const resonanceBonus = resonanceBoost ? 4 : 0;
+
+    return clamp(Math.round(60 + lengthScore + structureScore + keywordScore + resonanceBonus), 60, 98);
   }, [intent, resonanceBoost]);
 
   const confidenceDecimal = (confidence / 100).toFixed(2);

@@ -1,3 +1,5 @@
+import rpIntegration from "@/spec/RP-Integration.json";
+
 const RP_BASE_RULES = [
   "Halte den Ton klar, respektvoll und umsetzungsorientiert.",
   "Nutze konkrete Acceptance Criteria und messbare Erfolgsindikatoren.",
@@ -9,6 +11,15 @@ const RP_BOOST_RULES = [
   "Stärke Resonanz mit der IrsanAI-Vision: user-friendly, inklusiv, zukunftssicher.",
   "Füge einen kurzen Validierungsplan für lokale QA hinzu.",
 ];
+
+type RpIntegrationSpec = {
+  rpVersion: string;
+  activation: string;
+  fidelityTarget: number;
+  sourceRepo: string;
+};
+
+const RP_SPEC = rpIntegration as RpIntegrationSpec;
 
 export type LrpPromptInput = {
   intent: string;
@@ -34,6 +45,12 @@ export function buildLrpPrompt({ intent, resonanceBoost, ntfConfidence, targetRe
     `- Resonance Boost: ${resonanceBoost ? "enabled" : "disabled"}`,
     `- Target Repository: ${targetRepo}`,
     "",
+    "## RP-v1.0 Integration",
+    `- Source Repo (Submodule): ${RP_SPEC.sourceRepo}`,
+    `- RP Version: ${RP_SPEC.rpVersion}`,
+    `- Activation: ${RP_SPEC.activation}`,
+    `- Fidelity Target: ${RP_SPEC.fidelityTarget}`,
+    "",
     "## Intent JSON",
     "```json",
     JSON.stringify(
@@ -44,6 +61,7 @@ export function buildLrpPrompt({ intent, resonanceBoost, ntfConfidence, targetRe
         desiredOutcome: "Strukturierte und umsetzbare Prompt-basierte Entwicklungsanweisung",
         ntfConfidence,
         rpMode: resonanceBoost,
+        rpVersion: RP_SPEC.rpVersion,
         timestamp,
       },
       null,

@@ -1,13 +1,14 @@
+import { RepoSyncSection } from "@/components/repo-sync-section";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
-import { Badge } from "@/components/ui/badge";
+import { Textarea } from "@/components/ui/textarea";
 
 export default function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-8 md:p-24 bg-gradient-to-b from-background to-muted">
-      <div className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex">
+      <div className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex lg:flex-col lg:gap-8">
         <Card className="w-full max-w-2xl mx-auto">
           <CardHeader>
             <CardTitle className="text-3xl font-bold text-center">IrsanAI Forge – Intent Studio</CardTitle>
@@ -56,6 +57,8 @@ export default function Home() {
             </Button>
           </CardFooter>
         </Card>
+
+        <RepoSyncSection />
       </div>
 
       <div className="fixed bottom-8 right-8">

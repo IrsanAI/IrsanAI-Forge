@@ -1,36 +1,38 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# IrsanAI Forge
 
-## Getting Started
+Resonance-Powered GitHub Forge – Sync Repo → NTF-Intent → LRP-Prompt → optional RP-v1.0 Boost → Open in Grok/Claude/Gemini.
 
-First, run the development server:
+## Setup
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
+pnpm install
 pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Current MVP Features
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- GitHub OAuth via NextAuth (resilient runtime fallback).
+- Intent Studio UI with NTF textarea, confidence progress, LRP/RP buttons.
+- Repository Sync section (after login) with selectable GitHub repos and local sync state.
 
-## Learn More
+## Repo Sync Flow (MVP)
 
-To learn more about Next.js, take a look at the following resources:
+1. Login with GitHub.
+2. Open **Sync Repository** section.
+3. Select one of your repositories.
+4. Click **Sync this repo to Forge**.
+5. Forge stores the selection in localStorage and confirms sync success.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## LOP (Endnote – priorisiert)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. **P1 – Repo Sync + Intent Binding**: ✅ **100%**
+   - Repositories can be loaded after GitHub login.
+   - Selected repository can be synced and persisted locally (MVP).
+2. **P2 – LRP Generation Pipeline**: 🟡 **35%**
+   - UI is in place; backend orchestration still pending.
+3. **P3 – RP-v1.0 Boost Integration**: 🟡 **20%**
+   - UX entry points exist; integration logic is pending.
+4. **P4 – One-click Open in Grok/Claude/Gemini**: 🟡 **30%**
+   - Buttons exist in UI; dynamic prompt handoff is pending.

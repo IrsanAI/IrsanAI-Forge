@@ -47,6 +47,7 @@ function IntentStudioContent() {
   const [generatedPrompt, setGeneratedPrompt] = useState("");
   const [isPromptModalOpen, setIsPromptModalOpen] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [isGenerating, setIsGenerating] = useState(false);
 
   const confidence = useMemo(() => {
     const cleanIntent = intent.trim().toLowerCase();
@@ -68,22 +69,30 @@ function IntentStudioContent() {
 
   const confidenceDecimal = (confidence / 100).toFixed(2);
 
-  const handleGeneratePrompt = () => {
+  const handleGeneratePrompt = async () => {
     const cleanIntent = intent.trim();
     if (!cleanIntent) {
       return;
     }
 
-    const prompt = buildLrpPrompt({
-      intent: cleanIntent,
-      resonanceBoost,
-      ntfConfidence: confidence / 100,
-      targetRepo: selectedRepoFullName || "IrsanAI-Forge",
-    });
+    setIsGenerating(true);
 
-    setGeneratedPrompt(prompt);
-    setCopied(false);
-    setIsPromptModalOpen(true);
+    try {
+      await new Promise((resolve) => window.setTimeout(resolve, 320));
+
+      const prompt = buildLrpPrompt({
+        intent: cleanIntent,
+        resonanceBoost,
+        ntfConfidence: confidence / 100,
+        targetRepo: selectedRepoFullName || "IrsanAI-Forge",
+      });
+
+      setGeneratedPrompt(prompt);
+      setCopied(false);
+      setIsPromptModalOpen(true);
+    } finally {
+      setIsGenerating(false);
+    }
   };
 
   const copyPromptToClipboard = async () => {
@@ -185,10 +194,10 @@ function IntentStudioContent() {
               <Button
                 size="lg"
                 className="bg-primary font-semibold text-primary-foreground hover:bg-primary/80"
-                onClick={handleGeneratePrompt}
-                disabled={!intent.trim()}
+                onClick={() => void handleGeneratePrompt()}
+                disabled={!intent.trim() || isGenerating}
               >
-                Generate LRP-Prompt
+                {isGenerating ? "Generating..." : "Generate LRP-Prompt"}
               </Button>
 
               <div className="flex items-center justify-center gap-3 rounded-md border px-4 py-2">

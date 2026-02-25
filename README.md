@@ -177,6 +177,13 @@ npm run dev
 
 ---
 
+## Live Demo
+
+- Vercel (coming soon): `https://irsanai-forge.vercel.app`
+- Sobald Deployment live ist, hier den finalen Produktiv-Link eintragen.
+
+---
+
 ## Vercel Deploy (One-Click)
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/IrsanAI/IrsanAI-Forge)
@@ -222,6 +229,14 @@ Wir freuen uns über Contributions aus der Community.
 - **Current behavior**
 - **Steps to reproduce**
 - **Environment** (OS, Node-Version, Docker ja/nein)
+
+---
+
+## Known Limitations
+
+- In einigen Corporate-/CI-Umgebungen kann `pnpm add @octokit/core` durch Registry/Proxy-Policies mit `403` fehlschlagen.
+- `next build` kann in restriktiven Netzwerken bei Google-Font-Fetch (`Inter`) fehlschlagen; lokal wird dann meist eine Fallback-Font genutzt.
+- Für GitHub-Repo-Sync ist ein valider OAuth-Login mit `repo`-Scope erforderlich.
 
 ---
 

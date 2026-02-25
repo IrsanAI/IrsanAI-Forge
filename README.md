@@ -2,6 +2,16 @@
 
 Resonance-Powered GitHub Forge – Sync Repo → NTF-Intent → LRP-Prompt → optional RP-v1.0 Boost → Open in Grok/Claude/Gemini.
 
+## MetaFlow Guard (Branding & Arbeitsmodus)
+
+Ab sofort ist der offizielle Name für die Denkweise:
+
+**IrsanAI MetaFlow Guard**
+
+MetaFlow Guard bedeutet: Hindernisse früh erkennen, nächste Schritte glasklar machen und User-Frustration aktiv verhindern.
+
+---
+
 ## Quickstart (recommended)
 
 ```bash
@@ -15,204 +25,204 @@ Open [http://localhost:3000](http://localhost:3000).
 
 ---
 
-## WHO AM I? (Setup by environment)
-
-Choose your environment and run the matching steps.
-
-### 1) Windows User (PowerShell / CMD)
-
-If `pnpm` is not recognized, follow this **predictive order**:
-
-#### Path A — Corepack works (normal case)
-
-```powershell
-node -v
-corepack enable
-corepack prepare pnpm@latest --activate
-pnpm -v
-pnpm install
-pnpm dev
-```
-
-#### Path B — Corepack fails with `EPERM` on `C:\Program Files\nodejs\pnpm`
-
-This means your shell cannot write into the Node.js install directory (missing admin rights).
-
-Use **Corepack without global enable** (no Program Files write required):
-
-```powershell
-node -v
-corepack prepare pnpm@latest --activate
-corepack pnpm -v
-corepack pnpm install
-corepack pnpm dev
-```
-
-If `corepack pnpm ...` still fails, use the **no-install fallback**:
-
-```powershell
-npx pnpm@latest -v
-npx pnpm@latest install
-npx pnpm@latest dev
-```
-
-#### Path C — Last fallback (npm)
-
-```powershell
-npm install
-npm run dev
-```
-
-> Repo-standard remains pnpm, but npm is valid when corporate/device permissions block pnpm bootstrap.
-
-### 2) PyCharm User (Windows/macOS/Linux)
-
-PyCharm works fine, but its terminal only sees tools that already exist in your OS `PATH`.
-A Python `.venv` does **not** install pnpm.
-
-#### Recommended PyCharm flow
-
-1. Open **PyCharm Terminal** in the project root.
-2. Check runtime:
-   ```bash
-   node -v
-   ```
-3. Try standard pnpm bootstrap:
-   ```bash
-   corepack enable
-   corepack prepare pnpm@latest --activate
-   pnpm -v
-   ```
-4. If you get Windows `EPERM` (Program Files), switch immediately to:
-   ```bash
-   corepack pnpm -v
-   corepack pnpm install
-   corepack pnpm dev
-   ```
-5. If that also fails, use:
-   ```bash
-   npx pnpm@latest install
-   npx pnpm@latest dev
-   ```
-
-#### PyCharm terminal settings (important)
-
-- **Settings → Tools → Terminal**
-- Shell path should be a real system shell (`powershell.exe`, `cmd.exe`, `bash`) 
-- Restart PyCharm after Node/Corepack changes so PATH refreshes in terminal sessions.
-
-### 3) macOS / Linux User
+## Setup in 60 Sekunden (Automation)
 
 ```bash
-node -v
-corepack enable
-corepack prepare pnpm@latest --activate
-pnpm -v
-pnpm install
-pnpm dev
+pnpm setup:local
 ```
 
-If your shell has permission constraints, use:
-
-```bash
-corepack pnpm install
-corepack pnpm dev
-```
-
-or
-
-```bash
-npx pnpm@latest install
-npx pnpm@latest dev
-```
-
-### 4) Smartphone / Tablet User
-
-Active local development is **not recommended** on mobile-only environments.
-Use one of:
-- GitHub Codespaces
-- Remote dev server / VPS
-- Desktop/laptop with Node.js + pnpm
+Das Script übernimmt:
+- `.env.local` aus `.env.example` anlegen (falls fehlend)
+- `pnpm install`
+- Submodule-Init (mit Fallback)
+- Placeholder-Check für OAuth/Secrets
+- Next Actions für Start + OAuth
 
 ---
 
-## Fallback if pnpm is blocked
-
-If company policies or environment restrictions block pnpm entirely, you can still run locally with npm:
+## Docker Quickstart (empfohlen für 1-Klick-Setup)
 
 ```bash
-npm install
-npm run dev
-```
-
----
-
-## Required Versions
-
-- Node.js: **>= 20**
-- pnpm: **latest via Corepack or npx fallback**
-
----
-
-## Docker (optional, but very useful for GitHub visitors)
-
-**Decision:** Yes — for this repo Docker is a good addition (not too much), because it removes local Node/pnpm setup friction for first-time visitors.
-
-### Prerequisites
-- Docker Desktop (Windows/macOS) or Docker Engine (Linux)
-
-### 1) Prepare env file
-Create `.env.local` in project root (used by `docker-compose.yml`):
-
-```bash
-NEXTAUTH_URL=http://localhost:3000
-AUTH_SECRET=replace-with-a-long-random-secret
-GITHUB_ID=your_github_oauth_app_client_id
-GITHUB_SECRET=your_github_oauth_app_client_secret
-```
-
-### 2) Start with Docker Compose
-
-```bash
+cp .env.example .env.local
 docker compose up --build
 ```
 
-Then open [http://localhost:3000](http://localhost:3000).
+Open [http://localhost:3000](http://localhost:3000).
 
-### 3) Stop
+Stoppen:
 
 ```bash
 docker compose down
 ```
 
-### Notes
-- The project uses a production-style multi-stage Docker build with Next.js standalone output.
-- For local non-Docker development, keep using the pnpm/corepack flow above.
+Für ein Production-Image:
+
+```bash
+docker compose --profile prod up --build
+```
+
+---
+
+## OAuth Setup (GitHub) – Schritt für Schritt
+
+> Ohne OAuth bleiben Login und Repo-Sync unvollständig.
+
+### 1) GitHub OAuth App erstellen
+
+1. Öffne: <https://github.com/settings/developers>
+2. Klicke **OAuth Apps** → **New OAuth App**.
+3. Trage ein:
+   - **Application name**: `IrsanAI Forge`
+   - **Homepage URL**: `http://localhost:3000`
+   - **Authorization callback URL**: `http://localhost:3000/api/auth/callback/github`
+4. Speichern und **Client ID** + **Client Secret** kopieren.
+
+### 2) `.env.local` anlegen
+
+```bash
+cp .env.example .env.local
+```
+
+Eintragen:
+- `GITHUB_ID`
+- `GITHUB_SECRET`
+- `NEXTAUTH_URL=http://localhost:3000`
+- `NEXTAUTH_SECRET`
+- `AUTH_SECRET`
+
+### 3) Secret generieren
+
+Option A (OpenSSL):
+
+```bash
+openssl rand -base64 32
+```
+
+Option B (Node.js):
+
+```bash
+node -e "console.log(require('crypto').randomBytes(32).toString('base64'))"
+```
+
+Option C (script):
+
+```bash
+pnpm auth:secret
+```
+
+### 4) Neustart
+
+```bash
+pnpm dev
+```
+
+oder:
+
+```bash
+docker compose up --build
+```
+
+### 5) Check
+
+1. **Connect GitHub** klicken.
+2. In **Sync Repository** sollten echte Repos laden.
+3. Repo auswählen und **Sync this repo to Forge**.
+
+---
+
+## API Error Recovery (präventive Matrix)
+
+- **401 Not authenticated**
+  - Ursache: Nicht eingeloggt.
+  - Fix: GitHub verbinden, Seite neu laden.
+- **403 access token missing**
+  - Ursache: Session/OAuth nicht sauber.
+  - Fix: Ausloggen, neu einloggen, Callback URL prüfen.
+- **500 @octokit/core missing**
+  - Ursache: Dependency konnte nicht installiert werden.
+  - Fix: `pnpm add @octokit/core` und bei Proxy-Umgebung README „Known Limitations“ beachten.
+
+---
+
+## Vercel Deploy (One-Click)
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/IrsanAI/IrsanAI-Forge)
+
+### Required Vercel Environment Variables
+
+- `NEXTAUTH_URL` (z. B. `https://your-project.vercel.app`)
+- `NEXTAUTH_SECRET`
+- `AUTH_SECRET`
+- `GITHUB_ID`
+- `GITHUB_SECRET`
+- `NEXT_TELEMETRY_DISABLED=1` (optional)
+
+### Deploy Troubleshooting
+
+- **Login loop** → `NEXTAUTH_URL` auf echte Domain setzen.
+- **500 bei `/api/github/repos`** → OAuth-Scopes (`read:user repo`) prüfen.
+- **Keine Repos sichtbar** → einmal sign out/in.
+
+---
+
+## Live Demo
+
+- Vercel (coming soon): `https://irsanai-forge.vercel.app`
+- Sobald Deployment live ist, hier finalen Link eintragen.
+
+---
+
+## Docker + Submodules (MetaFlow Guard abgesichert)
+
+Der Docker-Build initialisiert Submodules automatisch – auch bei frischen Clones ohne `.git` im Build-Kontext:
+
+- Mit `.git`: `git submodule update --init --recursive`
+- Ohne `.git`: Fallback-Clone via `.gitmodules`
+
+Siehe: `scripts/init-submodules.sh` + `Dockerfile`.
+
+---
+
+## Release & Marketplace Readiness (GitHub Marketplace)
+
+Vor Marketplace-Listing:
+
+1. Vercel Live-Link aktiv setzen
+2. Kurzvideo/GIF „idea → prompt → handoff“ (10–20s)
+3. Issue Templates (Bug + Feature) aktiv
+4. Tag + Changelog `v0.1.0`
+
+---
+
+## Contribution
+
+1. Fork + Branch (`feature/...`, `fix/...`)
+2. Lokal testen:
+   ```bash
+   pnpm exec tsc --noEmit
+   pnpm lint
+   ```
+3. PR mit Problem, Lösung, Tests, Screenshot (bei UI-Änderung)
+
+---
+
+## Known Limitations
+
+- In manchen Corporate-/CI-Umgebungen schlägt `pnpm add @octokit/core` mit `403` fehl (Registry/Proxy).
+- `next build` kann bei gesperrtem Google Fonts Zugriff (`Inter`) scheitern.
 
 ---
 
 ## Current MVP Features
 
-- GitHub OAuth via NextAuth (resilient runtime fallback).
-- Intent Studio UI with NTF textarea, confidence progress, LRP/RP buttons.
-- Repository Sync section (after login) with selectable GitHub repos and local sync state.
-
-## Repo Sync Flow (MVP)
-
-1. Login with GitHub.
-2. Open **Sync Repository** section.
-3. Select one of your repositories.
-4. Click **Sync this repo to Forge**.
-5. Forge stores the selection in localStorage and confirms sync success.
+- GitHub OAuth via NextAuth
+- Intent Studio UI mit Confidence Score + LRP Modal
+- Repo Sync mit echter GitHub Repo-Liste
+- One-click Handoff: Grok, Claude, Gemini
 
 ## LOP (Endnote – priorisiert)
 
 1. **P1 – Repo Sync + Intent Binding**: ✅ **100%**
-   - Repositories can be loaded after GitHub login.
-   - Selected repository can be synced and persisted locally (MVP).
-2. **P2 – LRP Generation Pipeline**: 🟡 **35%**
-   - UI is in place; backend orchestration still pending.
-3. **P3 – RP-v1.0 Boost Integration**: 🟡 **20%**
-   - UX entry points exist; integration logic is pending.
-4. **P4 – One-click Open in Grok/Claude/Gemini**: 🟡 **30%**
-   - Buttons exist in UI; dynamic prompt handoff is pending.
+2. **P2 – LRP Generation Pipeline**: ✅ **100%**
+3. **P3 – RP-v1.0 Boost Integration**: ✅ **100%**
+4. **P4 – One-click Open in Grok/Claude/Gemini**: ✅ **100%**

@@ -14,7 +14,7 @@ FROM deps AS dev
 ENV NODE_ENV=development
 COPY .gitmodules ./.gitmodules
 COPY scripts/init-submodules.sh /usr/local/bin/init-submodules
-RUN chmod +x /usr/local/bin/init-submodules
+RUN sed -i 's/\r$//' /usr/local/bin/init-submodules && chmod +x /usr/local/bin/init-submodules
 COPY . .
 RUN /usr/local/bin/init-submodules
 EXPOSE 3000
@@ -24,7 +24,7 @@ FROM deps AS builder
 ENV NODE_ENV=production
 COPY .gitmodules ./.gitmodules
 COPY scripts/init-submodules.sh /usr/local/bin/init-submodules
-RUN chmod +x /usr/local/bin/init-submodules
+RUN sed -i 's/\r$//' /usr/local/bin/init-submodules && chmod +x /usr/local/bin/init-submodules
 COPY . .
 RUN /usr/local/bin/init-submodules
 RUN pnpm build

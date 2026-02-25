@@ -44,6 +44,7 @@ Das Script übernimmt:
 
 ```bash
 cp .env.example .env.local
+# optional fallback for older setups: cp .env.example .env
 docker compose up --build
 ```
 
@@ -144,6 +145,29 @@ docker compose up --build
 
 ---
 
+## Docker Error FAQ (Windows/PyCharm)
+
+### Fehler: `env file .../.env not found`
+
+Ursache: In älteren Compose-Konfigurationen wurde `.env` als Pflichtdatei erwartet.
+
+Fix (copy/paste):
+
+```bash
+cp .env.example .env.local
+# optional compatibility fallback
+cp .env.example .env
+docker compose up --build
+```
+
+### Fehler: `No such file or directory 'sh` bei `init-submodules`
+
+Ursache: Script wurde mit Windows-CRLF ausgecheckt.
+
+Status im Repo: Dockerfile normalisiert nun Zeilenenden automatisch vor Ausführung.
+
+---
+
 ## Vercel Deploy (One-Click)
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/IrsanAI/IrsanAI-Forge)
@@ -162,12 +186,6 @@ docker compose up --build
 - **Login loop** → `NEXTAUTH_URL` auf echte Domain setzen.
 - **500 bei `/api/github/repos`** → OAuth-Scopes (`read:user repo`) prüfen.
 - **Keine Repos sichtbar** → einmal sign out/in.
-
-Das Script übernimmt:
-- `.env.local` aus `.env.example` anlegen (falls fehlend)
-- `pnpm install`
-- Submodule-Init (mit Fallback)
-- Hinweis zur Secret-Generierung (`pnpm auth:secret`)
 
 ---
 
@@ -216,6 +234,7 @@ Vor Marketplace-Listing:
 
 - In manchen Corporate-/CI-Umgebungen schlägt `pnpm add @octokit/core` mit `403` fehl (Registry/Proxy).
 - `next build` kann bei gesperrtem Google Fonts Zugriff (`Inter`) scheitern.
+- Wenn Docker auf Windows/PyCharm mit `.env not found` stoppt: `cp .env.example .env.local` (optional zusätzlich `.env`) und erneut `docker compose up --build`.
 
 ---
 

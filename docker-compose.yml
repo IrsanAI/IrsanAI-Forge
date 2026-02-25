@@ -3,9 +3,52 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: irsanai-forge:latest
+      target: dev
+    image: irsanai-forge:dev
+    command: pnpm dev --hostname 0.0.0.0 --port 3000
     ports:
       - "3000:3000"
     env_file:
       - .env.local
+    environment:
+      NODE_ENV: development
+      NEXT_TELEMETRY_DISABLED: "1"
+      WATCHPACK_POLLING: "true"
+      CHOKIDAR_USEPOLLING: "true"
+    volumes:
+      - ./:/app
+      - forge-node-modules:/app/node_modules
+      - forge-next-cache:/app/.next
     restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "/dev/null", "http://localhost:3000"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+
+  forge-prod:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: production
+    image: irsanai-forge:latest
+    profiles: ["prod"]
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env.local
+    environment:
+      NODE_ENV: production
+      NEXT_TELEMETRY_DISABLED: "1"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "/dev/null", "http://localhost:3000"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+
+volumes:
+  forge-node-modules:
+  forge-next-cache:

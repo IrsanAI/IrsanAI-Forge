@@ -159,6 +159,12 @@ function IntentStudioContent() {
               />
             </div>
 
+            {!isAuthenticated ? (
+              <div className="rounded-md border border-dashed bg-muted/40 p-3 text-xs text-muted-foreground">
+                Prädiktiver Hinweis: Verbinde zuerst GitHub (oben rechts), damit Repository-Sync und Prompt-Targeting ohne Unterbrechung funktionieren.
+              </div>
+            ) : null}
+
             {isAuthenticated ? (
               <div className="space-y-2">
                 <div className="flex items-center justify-between gap-2">

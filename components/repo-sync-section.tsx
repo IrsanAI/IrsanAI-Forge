@@ -36,7 +36,7 @@ export function RepoSyncSection() {
         if (!response.ok) {
           if (response.status === 401) {
             setIsAuthenticated(false);
-            setErrorMessage("Bitte verbinde zuerst deinen GitHub-Account.");
+            setErrorMessage("Bitte verbinde zuerst deinen GitHub-Account über 'Connect GitHub'.");
           } else {
             const payload = (await response.json()) as { error?: string };
             setErrorMessage(payload.error ?? "Repos konnten nicht geladen werden.");
@@ -53,7 +53,7 @@ export function RepoSyncSection() {
         setRepos(payload.repos);
         setErrorMessage("");
       } catch {
-        setErrorMessage("Netzwerkfehler beim Laden der Repositories.");
+        setErrorMessage("Netzwerkfehler beim Laden der Repositories. Prüfe Internet/Proxy und versuche es erneut.");
       } finally {
         setLoading(false);
       }
@@ -127,6 +127,12 @@ export function RepoSyncSection() {
 
         {errorMessage ? <p className="text-sm text-destructive">{errorMessage}</p> : null}
         {successMessage ? <p className="text-sm text-green-500">{successMessage}</p> : null}
+
+        {!isAuthenticated && !loading ? (
+          <div className="rounded-md border border-dashed p-3 text-xs text-muted-foreground">
+            Tipp: Wenn der Repo-Select leer bleibt, prüfe in der README den Abschnitt <strong>OAuth Setup (GitHub)</strong>.
+          </div>
+        ) : null}
       </CardContent>
     </Card>
   );

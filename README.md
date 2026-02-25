@@ -163,6 +163,12 @@ docker compose up --build
 - **500 bei `/api/github/repos`** → OAuth-Scopes (`read:user repo`) prüfen.
 - **Keine Repos sichtbar** → einmal sign out/in.
 
+Das Script übernimmt:
+- `.env.local` aus `.env.example` anlegen (falls fehlend)
+- `pnpm install`
+- Submodule-Init (mit Fallback)
+- Hinweis zur Secret-Generierung (`pnpm auth:secret`)
+
 ---
 
 ## Live Demo

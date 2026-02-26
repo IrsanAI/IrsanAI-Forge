@@ -4,6 +4,7 @@ import Link from "next/link";
 
 import { NavbarAuthButton } from "@/components/navbar-auth-button";
 import { NavbarControls } from "@/components/navbar-controls";
+import { ForgeProvider } from "@/lib/forge-context";
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -21,35 +22,37 @@ export default function RootLayout({
   return (
     <html lang="de" className="dark">
       <body className={`${inter.className} min-h-screen bg-background text-foreground antialiased`}>
-        <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-          <div className="container mx-auto flex h-16 items-center justify-between px-4">
-            <div className="flex items-center gap-2">
-              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-xl font-bold text-primary-foreground">
-                F
+        <ForgeProvider>
+          <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+            <div className="container mx-auto flex h-16 items-center justify-between px-4">
+              <div className="flex items-center gap-2">
+                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-xl font-bold text-primary-foreground">
+                  F
+                </div>
+                <span className="hidden text-xl font-bold md:inline-block">IrsanAI Forge</span>
               </div>
-              <span className="hidden text-xl font-bold md:inline-block">IrsanAI Forge</span>
+
+              <nav className="hidden items-center gap-6 md:flex">
+                <Link href="/" className="text-sm font-medium transition-colors hover:text-primary">
+                  Home
+                </Link>
+                <Link href="/#intent-studio" className="text-sm font-medium transition-colors hover:text-primary">
+                  Intent Studio
+                </Link>
+                <Link href="/docs" className="text-sm font-medium transition-colors hover:text-primary">
+                  Docs
+                </Link>
+              </nav>
+
+              <div className="flex items-center gap-3">
+                <NavbarControls />
+                <NavbarAuthButton />
+              </div>
             </div>
+          </header>
 
-            <nav className="hidden items-center gap-6 md:flex">
-              <Link href="/" className="text-sm font-medium transition-colors hover:text-primary">
-                Home
-              </Link>
-              <Link href="/intent" className="text-sm font-medium transition-colors hover:text-primary">
-                Intent Studio
-              </Link>
-              <Link href="/docs" className="text-sm font-medium transition-colors hover:text-primary">
-                Docs
-              </Link>
-            </nav>
-
-            <div className="flex items-center gap-3">
-              <NavbarControls />
-              <NavbarAuthButton />
-            </div>
-          </div>
-        </header>
-
-        <main className="flex-1">{children}</main>
+          <main className="flex-1">{children}</main>
+        </ForgeProvider>
       </body>
     </html>
   );

@@ -14,6 +14,8 @@ MetaFlow Guard bedeutet: Hindernisse früh erkennen, nächste Schritte glasklar 
 
 ## Quickstart (recommended)
 
+> ⚠️ Wichtig: **Egal ob `pnpm dev` oder Docker** – für GitHub-Login brauchst du immer gültige Secrets + OAuth-Werte in `.env.local`.
+
 ```bash
 corepack enable
 corepack prepare pnpm@latest --activate
@@ -48,6 +50,14 @@ cp .env.example .env.local
 docker compose up --build
 ```
 
+Danach in `.env.local` **mindestens** setzen (kein Placeholder wie `replace_with_...`):
+
+- `GITHUB_ID`
+- `GITHUB_SECRET`
+- `AUTH_SECRET` **oder** `NEXTAUTH_SECRET`
+
+Wenn du nur UI ohne GitHub-Login testen willst, kann Docker auch ohne echte OAuth-Daten starten – aber **Connect GitHub** bleibt dann deaktiviert.
+
 Open [http://localhost:3000](http://localhost:3000).
 
 Stoppen:
@@ -67,6 +77,26 @@ docker compose --profile prod up --build
 ## OAuth Setup (GitHub) – Schritt für Schritt
 
 > Ohne OAuth bleiben Login und Repo-Sync unvollständig.
+
+## Welche Schritte sind je Szenario nötig?
+
+### Szenario A: Nur UI lokal testen (ohne GitHub Login)
+- `pnpm dev` **oder** `docker compose up --build`
+- Keine echten OAuth-Werte nötig
+- Erwartetes Verhalten: App läuft, aber „Connect GitHub“ bleibt deaktiviert / Repo-Sync liefert 401
+
+### Szenario B: Voller Flow lokal mit `pnpm dev` (mit GitHub Login)
+- OAuth App in GitHub erstellen
+- `GITHUB_ID` + `GITHUB_SECRET` setzen
+- Secret setzen (`AUTH_SECRET` oder `NEXTAUTH_SECRET`)
+- App neu starten
+
+### Szenario C: Voller Flow mit Docker (mit GitHub Login)
+- **Genau dieselben Env-Anforderungen wie bei `pnpm dev`**
+- Docker liest `.env.local` (siehe `docker-compose.yml`)
+- Nach Änderungen an `.env.local`: `docker compose down && docker compose up --build`
+
+Kurzantwort auf deine Frage: **Ja, Secret-Thema gilt auch bei Docker**, sobald GitHub-Login funktionieren soll.
 
 ### 1) GitHub OAuth App erstellen
 
@@ -120,6 +150,17 @@ pnpm dev
 oder:
 
 ```bash
+docker compose up --build
+```
+
+Wenn Werte in `.env.local` geändert wurden:
+
+```bash
+# pnpm
+# dev server stoppen und neu starten
+
+# docker
+docker compose down
 docker compose up --build
 ```
 

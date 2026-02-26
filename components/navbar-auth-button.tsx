@@ -1,19 +1,32 @@
 import Image from "next/image";
 
-import { auth, signIn, signOut } from "@/auth";
+import { auth, signOut } from "@/auth";
 import { Button } from "@/components/ui/button";
 
 export async function NavbarAuthButton() {
   const session = await auth();
+  const githubOAuthConfigured = Boolean(process.env.GITHUB_ID && process.env.GITHUB_SECRET);
+  const authSecretConfigured = Boolean(process.env.AUTH_SECRET || process.env.NEXTAUTH_SECRET);
 
   if (!session?.user) {
+    if (!githubOAuthConfigured || !authSecretConfigured) {
+      return (
+        <div className="flex items-center gap-2">
+          <Button
+            type="button"
+            size="sm"
+            disabled
+            title="Setze GITHUB_ID, GITHUB_SECRET und AUTH_SECRET (oder NEXTAUTH_SECRET) in .env.local."
+          >
+            Connect GitHub
+          </Button>
+          <span className="text-xs text-muted-foreground">OAuth/Secret fehlt</span>
+        </div>
+      );
+    }
+
     return (
-      <form
-        action={async () => {
-          "use server";
-          await signIn("github");
-        }}
-      >
+      <form action="/api/auth/signin/github" method="get">
         <Button type="submit" size="sm">
           Connect GitHub
         </Button>

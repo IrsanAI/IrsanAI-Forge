@@ -11,7 +11,7 @@ import { Progress } from "@/components/ui/progress";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
-import { ForgeProvider, useForgeContext } from "@/lib/forge-context";
+import { useForgeContext } from "@/lib/forge-context";
 import { buildLrpPrompt } from "@/lib/lrp-generator";
 
 const DEFAULT_INTENT = "";
@@ -40,10 +40,16 @@ function clamp(value: number, min: number, max: number) {
 }
 
 function IntentStudioContent() {
-  const { isAuthenticated, repos, selectedRepoFullName, setSelectedRepoFullName } = useForgeContext();
+  const {
+    isAuthenticated,
+    resonanceBoost,
+    setResonanceBoost,
+    repos,
+    selectedRepoFullName,
+    setSelectedRepoFullName,
+  } = useForgeContext();
 
   const [intent, setIntent] = useState(DEFAULT_INTENT);
-  const [resonanceBoost, setResonanceBoost] = useState(false);
   const [generatedPrompt, setGeneratedPrompt] = useState("");
   const [isPromptModalOpen, setIsPromptModalOpen] = useState(false);
   const [copied, setCopied] = useState(false);
@@ -137,7 +143,7 @@ function IntentStudioContent() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-between bg-gradient-to-b from-background to-muted p-6 md:p-24">
       <div className="z-10 flex w-full max-w-5xl flex-col gap-8 font-mono text-sm">
-        <Card className="mx-auto w-full max-w-3xl">
+        <Card id="intent-studio" className="mx-auto w-full max-w-3xl scroll-mt-24">
           <CardHeader>
             <CardTitle className="text-center text-3xl font-bold">IrsanAI Forge – Intent Studio</CardTitle>
             <CardDescription className="mt-2 text-center">
@@ -269,9 +275,5 @@ function IntentStudioContent() {
 }
 
 export default function Home() {
-  return (
-    <ForgeProvider>
-      <IntentStudioContent />
-    </ForgeProvider>
-  );
+  return <IntentStudioContent />;
 }

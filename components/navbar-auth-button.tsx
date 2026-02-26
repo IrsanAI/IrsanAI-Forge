@@ -2,25 +2,32 @@ import Image from "next/image";
 
 import { auth, signOut } from "@/auth";
 import { Button } from "@/components/ui/button";
+import { getAuthConfigState } from "@/lib/auth-config";
 
 export async function NavbarAuthButton() {
-  const session = await auth();
-  const githubOAuthConfigured = Boolean(process.env.GITHUB_ID && process.env.GITHUB_SECRET);
-  const authSecretConfigured = Boolean(process.env.AUTH_SECRET || process.env.NEXTAUTH_SECRET);
+  const { githubConfigured, secretConfigured } = getAuthConfigState();
+
+  let session = null;
+
+  try {
+    session = await auth();
+  } catch {
+    session = null;
+  }
 
   if (!session?.user) {
-    if (!githubOAuthConfigured || !authSecretConfigured) {
+    if (!githubConfigured || !secretConfigured) {
       return (
         <div className="flex items-center gap-2">
           <Button
             type="button"
             size="sm"
             disabled
-            title="Setze GITHUB_ID, GITHUB_SECRET und AUTH_SECRET (oder NEXTAUTH_SECRET) in .env.local."
+            title="Setze GITHUB_ID, GITHUB_SECRET und AUTH_SECRET (oder NEXTAUTH_SECRET) in .env.local und verwende keine Placeholder-Werte."
           >
             Connect GitHub
           </Button>
-          <span className="text-xs text-muted-foreground">OAuth/Secret fehlt</span>
+          <span className="text-xs text-muted-foreground">OAuth/Secret ungültig</span>
         </div>
       );
     }

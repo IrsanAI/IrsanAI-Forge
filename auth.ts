@@ -1,5 +1,8 @@
 import NextAuth from "next-auth";
 import GitHub from "next-auth/providers/github";
+import { getAuthConfigState } from "@/lib/auth-config";
+
+const authConfig = getAuthConfigState();
 
 export const {
   handlers: { GET, POST },
@@ -7,17 +10,21 @@ export const {
   signIn,
   signOut,
 } = NextAuth({
-  providers: [
-    GitHub({
-      clientId: process.env.GITHUB_ID,
-      clientSecret: process.env.GITHUB_SECRET,
-      authorization: {
-        params: {
-          scope: "read:user repo",
-        },
-      },
-    }),
-  ],
+  secret: authConfig.authSecret,
+  trustHost: true,
+  providers: authConfig.githubConfigured
+    ? [
+        GitHub({
+          clientId: authConfig.githubId,
+          clientSecret: authConfig.githubSecret,
+          authorization: {
+            params: {
+              scope: "read:user repo",
+            },
+          },
+        }),
+      ]
+    : [],
   pages: {
     signIn: "/",
   },

@@ -26,8 +26,12 @@ export default function DocsPage() {
         </CardHeader>
         <CardContent className="space-y-2 text-sm text-muted-foreground">
           <p>Wenn "Connect GitHub" deaktiviert ist, fehlen OAuth-Variablen in der Umgebung.</p>
+          <p>Placeholder wie <code>replace_with_a_secure_random_secret</code> gelten als nicht konfiguriert.</p>
           <p>
             Wenn Repo-Sync 401 zeigt, ist noch keine Session aktiv. Verbinde GitHub neu und lade die Seite einmal neu.
+          </p>
+          <p>
+            Bei <code>/api/auth/error?error=Configuration</code>: Container neu starten, damit geänderte <code>.env.local</code>-Werte sicher übernommen werden.
           </p>
           <p>Der Theme-Button oben rechts schaltet zwischen Dark und Light Mode und speichert die Wahl lokal.</p>
         </CardContent>

@@ -5,8 +5,20 @@ import { Button } from "@/components/ui/button";
 
 export async function NavbarAuthButton() {
   const session = await auth();
+  const githubOAuthConfigured = Boolean(process.env.GITHUB_ID && process.env.GITHUB_SECRET);
 
   if (!session?.user) {
+    if (!githubOAuthConfigured) {
+      return (
+        <div className="hidden items-center gap-2 sm:flex">
+          <Button type="button" size="sm" disabled title="Setze GITHUB_ID und GITHUB_SECRET in .env.local.">
+            Connect GitHub
+          </Button>
+          <span className="text-xs text-muted-foreground">OAuth nicht konfiguriert</span>
+        </div>
+      );
+    }
+
     return (
       <form
         action={async () => {
